@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Stack, Text, Box, Input, Image } from '@chakra-ui/react';
 import { infoState } from '../atoms/info';
+import { rankingState } from '../atoms/ranking';
 import { useRecoilState } from 'recoil';
 
 const Topcontainer = () => {
   const [myInfo, setMyInfo] = useRecoilState(infoState);
+  const [ranking, setRanking] = useRecoilState(rankingState);
   const [loginId, setLoginId] = useState(null);
 
   const login = () => {
-    fetch('login/1', {
+    fetch('/login/1', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -21,10 +23,9 @@ const Topcontainer = () => {
   };
 
   const getMyInfo = () => {
-    fetch('getMyInfo/due', {
+    fetch('/myinfo/due', {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' ,
-      'Cache-Control': 'no-cache'},
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => response.json())
       .then((data) => {
@@ -32,11 +33,25 @@ const Topcontainer = () => {
       });
   };
 
+  const getRanking = () => {
+    fetch('/ranking', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json'},
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setRanking(data);
+      });
+  };
+
   useEffect(() => {
     var id = localStorage.getItem('id');
     setLoginId(id);
     getMyInfo(); //리소스가 갱신되었을 경우 새로고침시 확인할 수 있어야함
+    getRanking();
   }, []);
+
+  console.log(ranking);
 
   return (
     <>
