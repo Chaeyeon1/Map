@@ -2,6 +2,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
 import { Button, Stack, Text, Box, Input } from '@chakra-ui/react';
 import Topcontainer from './components/Topcontainer';
+import Ranking from './components/Ranking';
 import { RecoilRoot } from 'recoil';
 
 const App = () => (
@@ -43,60 +44,7 @@ const App = () => (
               <Stack justify='center' align='flex-start' spacing='0px'>
                   <Topcontainer />
               </Stack>
-              <Stack
-                paddingX='40px'
-                paddingY='20px'
-                borderRadius='20000px'
-                justify='flex-start'
-                align='center'
-                background='gray.50'
-              >
-                <Text
-                  fontFamily='Inter'
-                  lineHeight='1.5'
-                  fontWeight='semibold'
-                  fontSize='16px'
-                  color='#000000'
-                >
-                  현재 순위
-                </Text>
-                <Text
-                  fontFamily='Inter'
-                  lineHeight='1.43'
-                  fontWeight='semibold'
-                  fontSize='14px'
-                  color='#000000'
-                >
-                  🥇 10000bit
-                </Text>
-                <Text
-                  fontFamily='Inter'
-                  lineHeight='1.43'
-                  fontWeight='semibold'
-                  fontSize='14px'
-                  color='#000000'
-                >
-                  🥈 10000bit
-                </Text>
-                <Text
-                  fontFamily='Inter'
-                  lineHeight='1.43'
-                  fontWeight='semibold'
-                  fontSize='14px'
-                  color='#000000'
-                >
-                  🥉 10000bit
-                </Text>
-                <Text
-                  fontFamily='Inter'
-                  lineHeight='1.43'
-                  fontWeight='semibold'
-                  fontSize='14px'
-                  color='#000000'
-                >
-                  💣 10000bit
-                </Text>
-              </Stack>
+              <Ranking />
             </Stack>
             <Stack justify='flex-start' align='flex-start' spacing='32px'>
               <Stack
