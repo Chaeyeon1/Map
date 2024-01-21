@@ -1,9 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { Button, Stack, Text, Box, Input } from '@chakra-ui/react';
-import Topcontainer from './components/Topcontainer';
-import CardList from './components/CardList';
-import Card from './components/Card';
+import Topcontainer from'./components/Topcontainer';
 
 const App = () => (
   <ChakraProvider>
@@ -61,31 +59,7 @@ const App = () => (
                     </Text>
                   </Stack>
                 </Stack>
-                <Stack justify='center' align='flex-start' spacing='12px'>
-                  <Stack direction='row' justify='flex-start' align='center'>
-                    <Text
-                      fontFamily='Inter'
-                      fontWeight='regular'
-                      fontSize='12px'
-                      color='#000000'
-                      width='44px'
-                    >
-                      아이디
-                    </Text>
-                    <Input placeholder='Placeholder' size='xs' />
-                  </Stack>
-                  <Stack direction='row' justify='flex-start' align='center'>
-                    <Text
-                      fontFamily='Inter'
-                      fontWeight='regular'
-                      fontSize='12px'
-                      color='#000000'
-                    >
-                      전화번호
-                    </Text>
-                    <Input placeholder='Placeholder' size='xs' />
-                  </Stack>
-                </Stack>
+                <Topcontainer />
               </Stack>
             </Stack>
             <Stack
