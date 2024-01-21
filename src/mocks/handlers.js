@@ -4,15 +4,17 @@ const todos = ['먹기', '자기', '놀기'];
 
 export const handlers = [
   // 할일 목록
-  http.get('https://jsonplaceholder.typicode.com/posts/:id', () => {
+  http.get('login/:id', () => {
     return HttpResponse.json({
-      id : 'due'
+      id : 'Due'
     });
   }),
 
   // 할일 추가
-  http.get('getMyCoin/:id', () => {
+  http.get('getMyInfo/:id', () => {
     return HttpResponse.json({
+      id : 'Due',
+      bits : 5700,
       WAP : 3,
       APP : 5,
       MUT : 2,

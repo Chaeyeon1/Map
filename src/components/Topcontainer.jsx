@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Stack, Text, Box, Input, Image } from '@chakra-ui/react';
-import { coinState } from '../atoms/coin';
+import { infoState } from '../atoms/info';
 import { useRecoilState } from 'recoil';
 
 const Topcontainer = () => {
-  const [myCoin, setMyCoin] = useRecoilState(coinState);
+  const [myInfo, setMyInfo] = useRecoilState(infoState);
   const [loginId, setLoginId] = useState(null);
 
   const login = () => {
-    fetch('https://jsonplaceholder.typicode.com/posts/1', {
+    fetch('login/1', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -16,29 +16,27 @@ const Topcontainer = () => {
       .then((data) => {
         localStorage.setItem('id', data.id);
         setLoginId(data.id);
-        getMyCoin();
+        getMyInfo();
       });
   };
 
-  const getMyCoin = () => {
-    fetch('getMyCoin/due', {
+  const getMyInfo = () => {
+    fetch('getMyInfo/due', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' ,
       'Cache-Control': 'no-cache'},
     })
       .then((response) => response.json())
       .then((data) => {
-        setMyCoin(data);
+        setMyInfo(data);
       });
   };
 
   useEffect(() => {
     var id = localStorage.getItem('id');
-    setLoginId(id)
-    getMyCoin();
+    setLoginId(id);
+    getMyInfo(); //리소스가 갱신되었을 경우 새로고침시 확인할 수 있어야함
   }, []);
-
-  console.log(myCoin);
 
   return (
     <>
@@ -82,7 +80,7 @@ const Topcontainer = () => {
                   color='#000000'
                   width='70px'
                 >
-                  아이디
+                  닉네임
                 </Text>
                 <Input placeholder='Placeholder' size='xs' />
               </Stack>
@@ -128,12 +126,12 @@ const Topcontainer = () => {
                     fontSize='40px'
                     color='teal.900'
                   >
-                    ChaeYeon
+                    {loginId}
                   </Text>
                 </Stack>
                 <Stack direction='row' justify='flex-start' align='center'>
                   <Text>
-                    총 잔고 : 5700 bit
+                    총 잔고 : {myInfo.bits}
                   </Text>
                 </Stack>
               </Stack>
@@ -166,7 +164,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myCoin.WAP}
+                  X {myInfo.WAP}
                 </Text>
               </Stack>
               <Stack>
@@ -179,7 +177,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myCoin.APP}
+                  X {myInfo.APP}
                 </Text>
               </Stack>
               <Stack>
@@ -192,7 +190,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myCoin.MUT}
+                  X {myInfo.MUT}
                 </Text>
               </Stack>
               <Stack>
@@ -205,7 +203,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myCoin.PKNU}
+                  X {myInfo.PKNU}
                 </Text>
               </Stack>
               <Stack>
@@ -218,7 +216,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myCoin.PUS}
+                  X {myInfo.PUS}
                 </Text>
               </Stack>
               <Stack>
@@ -231,7 +229,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myCoin.PUFS}
+                  X {myInfo.PUFS}
                 </Text>
               </Stack>
             </Stack>

@@ -3,8 +3,8 @@ import { recoilPersist } from 'recoil-persist';
 
 const { persistAtom } = recoilPersist();
 
-export const coinState = atom({
-  key: 'coin',
+export const infoState = atom({
+  key: 'info',
   default: '',
   effects_UNSTABLE: [persistAtom],
 });
