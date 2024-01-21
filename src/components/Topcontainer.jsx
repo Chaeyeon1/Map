@@ -18,7 +18,6 @@ const Topcontainer = () => {
       .then((data) => {
         localStorage.setItem('id', data.id); 
         setLoginId(data.id);
-        getMyCoin();
       });
   };
 
@@ -33,7 +32,7 @@ const Topcontainer = () => {
       });
   };
   
-  console.log(myCoin);
+  console.log(myCoin);  
 
   if (!myCoin){
     return (
@@ -84,7 +83,9 @@ const Topcontainer = () => {
     );
   }
 
+  // getMyCoin();
   return (
+    
     //로그인 했으면 해당 아이디 정보로 조회 해야함
     <Text>{myCoin.WAP}</Text>
   )
