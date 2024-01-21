@@ -6,7 +6,6 @@ const Topcontainer = () => {
 
   var id  = localStorage.getItem('id');
   const [loginId, setLoginId] = useState(id || null);
-
   const [myCoin, setMyCoin] = useState(null);
 
   const login = () => {
@@ -24,15 +23,22 @@ const Topcontainer = () => {
   const getMyCoin = () => {
     fetch('getMyCoin/due', { //TODO url 변경
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' ,
+      'Cache-Control': 'no-cache'},
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log('set my coin');
         setMyCoin(data);
       });
-  };
-  
-  console.log(myCoin);  
+  };  
+
+  useEffect(() => {
+    var logined = localStorage.getItem('id');
+    if(logined){
+      getMyCoin();
+    }
+  }, [loginId]);
 
   if (!myCoin){
     return (
@@ -83,7 +89,6 @@ const Topcontainer = () => {
     );
   }
 
-  // getMyCoin();
   return (
     
     //로그인 했으면 해당 아이디 정보로 조회 해야함
