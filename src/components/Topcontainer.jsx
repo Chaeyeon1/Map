@@ -21,21 +21,24 @@ const Topcontainer = () => {
 
   const login = () => {
     console.log(loginInput);
-    fetch('/login/1', {
+    fetch('http://localhost:8080/login', {
       method: 'POST',
+      credentials: "include",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(loginInput)
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((data) => {
-        localStorage.setItem('id', data.id);
-        setLoginId(data.id);
+        localStorage.setItem('id', data);
+        setLoginId(data);
         getMyInfo();
       });
   };
 
   const getMyInfo = () => {
-    fetch('/myinfo/due', {
+    var id = localStorage.getItem("id");
+
+    fetch('http://localhost:8080/api/my-info/'+id, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -140,7 +143,7 @@ const Topcontainer = () => {
                     fontSize='40px'
                     color='teal.900'
                   >
-                    {loginId}
+                    {myInfo.name}
                   </Text>
                 </Stack>
                 <Stack direction='row' justify='flex-start' align='center'>
@@ -178,7 +181,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.WAP}
+                  X {myInfo.wap}
                 </Text>
               </Stack>
               <Stack>
@@ -191,7 +194,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.APP}
+                  X {myInfo.app}
                 </Text>
               </Stack>
               <Stack>
@@ -204,7 +207,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.MUT}
+                  X {myInfo.mut}
                 </Text>
               </Stack>
               <Stack>
@@ -217,7 +220,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.PKNU}
+                  X {myInfo.pknu}
                 </Text>
               </Stack>
               <Stack>
@@ -230,7 +233,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.PUS}
+                  X {myInfo.pus}
                 </Text>
               </Stack>
               <Stack>
@@ -243,7 +246,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.PUFS}
+                  X {myInfo.pufs}
                 </Text>
               </Stack>
             </Stack>

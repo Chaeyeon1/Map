@@ -12,14 +12,13 @@ const Ranking = () => {
     }, []);
 
     const getRanking = async() => {
-        fetch('/ranking', {
+        fetch('http://localhost:8080/api/ranking', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
             .then((response) => response.json())
             .then((data) => {
-            console.log('fetch get ranking');
-            setRanking(data.ranking);
+            setRanking(data);
             });
         };
 
