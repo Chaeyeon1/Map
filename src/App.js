@@ -3,11 +3,13 @@ import React from 'react';
 import { Button, Stack, Text, Box, Input } from '@chakra-ui/react';
 import Topcontainer from './components/Topcontainer';
 import Ranking from './components/Ranking';
+import Test from './components/Test';
 import { RecoilRoot } from 'recoil';
 
 const App = () => (
   <RecoilRoot>
     <ChakraProvider>
+      {/* <Test /> */}
       <Stack
         padding='24px'
         direction='row'

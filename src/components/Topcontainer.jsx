@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 
 const Topcontainer = () => {
   const [myInfo, setMyInfo] = useRecoilState(infoState);
+  const [myHoldings, setMyHoldings] = useState({});
   const [loginId, setLoginId] = useState(null);
   const [loginInput, setLoginInput] = useState({
     id : undefined,
@@ -32,6 +33,7 @@ const Topcontainer = () => {
         localStorage.setItem('id', data);
         setLoginId(data);
         getMyInfo();
+        getMyHoldings();
       });
   };
 
@@ -48,11 +50,27 @@ const Topcontainer = () => {
       });
   };
 
+  const getMyHoldings = () => {
+    var id = localStorage.getItem("id");
+
+    fetch('http://localhost:8080/api/holdings/'+id, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setMyHoldings(data);
+        console.log(myHoldings);
+      });
+  };
+
   useEffect(() => {
     var id = localStorage.getItem('id');
     setLoginId(id);
-    if(id!==null)
+    if(id!==null){
       getMyInfo(); //리소스가 갱신되었을 경우 새로고침시 확인할 수 있어야함
+      getMyHoldings();
+    }
   }, []);
 
   return (
@@ -135,6 +153,11 @@ const Topcontainer = () => {
             >
               <Stack justify='center' align='flex-start' spacing='12px'>
                 <Box width='191px' height='90px' />
+                <Stack>
+                  <Text color="gray" fontWeight="bold"
+                  >{myInfo.crew}
+                  </Text>
+                </Stack>
                 <Stack direction='row' justify='flex-start' align='center'> 
                   <Text
                     fontFamily='Inter'
@@ -143,12 +166,12 @@ const Topcontainer = () => {
                     fontSize='40px'
                     color='teal.900'
                   >
-                    {myInfo.name}
+                  {myInfo.userid}
                   </Text>
                 </Stack>
                 <Stack direction='row' justify='flex-start' align='center'>
                   <Text>
-                    총 잔고 : {myInfo.bits}
+                    총 잔고 : {myHoldings.wallet}
                   </Text>
                 </Stack>
               </Stack>
@@ -181,7 +204,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.wap}
+                  X {myHoldings.wap}
                 </Text>
               </Stack>
               <Stack>
@@ -194,7 +217,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.app}
+                  X {myHoldings.app}
                 </Text>
               </Stack>
               <Stack>
@@ -207,7 +230,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.mut}
+                  X {myHoldings.mut}
                 </Text>
               </Stack>
               <Stack>
@@ -220,7 +243,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.pknu}
+                  X {myHoldings.pknu}
                 </Text>
               </Stack>
               <Stack>
@@ -233,7 +256,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.pus}
+                  X {myHoldings.pus}
                 </Text>
               </Stack>
               <Stack>
@@ -246,7 +269,7 @@ const Topcontainer = () => {
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.pufs}
+                  X {myHoldings.pufs}
                 </Text>
               </Stack>
             </Stack>
