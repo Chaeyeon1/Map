@@ -1,21 +1,29 @@
 import { HttpResponse, http } from 'msw';
 
-const todos = ['먹기', '자기', '놀기'];
-
 export const handlers = [
-  // 할일 목록
-  http.get('https://jsonplaceholder.typicode.com/posts/:id', () => {
-    return HttpResponse.json({
-      coin: [
-        ['WAP', 'MAP'],
-        ['JJJ', 'KKK'],
-      ],
-    });
-  }),
 
-  // 할일 추가
-  http.post('/todos', (req, res, ctx) => {
-    todos.push(req.body);
-    return res(ctx.status(201));
-  }),
+  // http.post('/login/:id', () => {
+  //   return HttpResponse.json({
+  //     id : 'Due'
+  //   });
+  // }),
+
+  // http.get('/myinfo/:id', () => {
+  //   return HttpResponse.json({
+  //     id : 'Due',
+  //     bits : 5700,
+  //     WAP : 3,
+  //     APP : 5,
+  //     MUT : 2,
+  //     PKNU : 3,
+  //     PUS : 1,
+  //     PUFS : 0
+  //   });
+  // }),
+
+  // http.get('/ranking', () => {
+  //   return HttpResponse.json({
+  //     ranking : [50000,40000,30000,100]
+  //   });
+  // }),
 ];

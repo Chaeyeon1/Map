@@ -3,9 +3,13 @@ import { createRoot } from 'react-dom/client';
 
 import App from './App';
 import { worker } from './mocks/workers';
-if (process.env.NODE_ENV === 'development') {
-  worker.start();
+
+export async function initMocks(){
+  if (process.env.NODE_ENV === 'development') {
+    worker.start();
+  }
 }
+
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
