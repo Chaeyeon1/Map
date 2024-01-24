@@ -1,17 +1,17 @@
-import { HttpResponse, http } from "msw";
+import { HttpResponse, http } from 'msw';
 
 export const handlers = [
   // 할일 목록
-  http.get("/login/:id", () => {
+  http.get('/login/:id', () => {
     return HttpResponse.json({
-      id: "Due",
+      id: 'Due',
     });
   }),
 
   // 할일 추가
-  http.get("/myinfo/:id", () => {
+  http.get('/myinfo/:id', () => {
     return HttpResponse.json({
-      id: "Due",
+      id: 'Due',
       bits: 5700,
       WAP: 3,
       APP: 5,
@@ -22,51 +22,51 @@ export const handlers = [
     });
   }),
 
-  http.get("/ranking", () => {
+  http.get('/ranking', () => {
     return HttpResponse.json({
       ranking: [50000, 40000, 30000, 100],
     });
   }),
 
-  http.get("/coin", () => {
+  http.get('/coin', () => {
     return HttpResponse.json([
       {
-        coinName: "APP",
+        coinName: 'APP',
         coin_price: {
           prevPrice: 150,
           currentPrice: 240,
         },
       },
       {
-        coinName: "BUFS",
+        coinName: 'BUFS',
         coin_price: {
           prevPrice: 50000,
           currentPrice: 55000,
         },
       },
       {
-        coinName: "MUT",
+        coinName: 'MUT',
         coin_price: {
           prevPrice: 50000,
           currentPrice: 55000,
         },
       },
       {
-        coinName: "PKNU",
+        coinName: 'PKNU',
         coin_price: {
           prevPrice: 50000,
           currentPrice: 55000,
         },
       },
       {
-        coinName: "PNU",
+        coinName: 'PNU',
         coin_price: {
           prevPrice: 50000,
           currentPrice: 55000,
         },
       },
       {
-        coinName: "WAP",
+        coinName: 'WAP',
         coin_price: {
           prevPrice: 50000,
           currentPrice: 55000,
@@ -74,7 +74,7 @@ export const handlers = [
       },
     ]);
   }),
-  http.get("/holding/:wallet", () => {
+  http.get('/holding/:wallet', () => {
     return HttpResponse.json({
       wallet: 1,
       coinNum: {
