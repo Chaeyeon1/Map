@@ -13,14 +13,17 @@ const CardList = () => {
         const response = await fetch('/coin', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
+          mode:'no-cors'
         });
         const coinData = await response.json();
         console.log(coinData);
 
-        const holdingResponse = await fetch('/holding/1', {
+        const holdingResponse = await fetch('http://localhost:5202/api/Coin/holdings/1', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors'
         });
+
         const holdingData = await holdingResponse.json();
         console.log(holdingData);
 

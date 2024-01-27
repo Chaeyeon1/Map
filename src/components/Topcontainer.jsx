@@ -23,7 +23,7 @@ const Topcontainer = () => {
   };
 
   const getMyInfo = () => {
-    fetch('/myinfo/due', {
+    fetch('http://localhost:5202/api/coin/holdings/1', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
