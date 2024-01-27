@@ -166,7 +166,7 @@ const CardList = () => {
                     fontSize='14px'
                     color='#000000'
                   >
-                    보유 개수 : {coinsNum[coin.coinName.toUpperCase()]}
+                    {/* 보유 개수 : {coinsNum[coin.coinName.toUpperCase()]} */}
                   </Text>
                 </Stack>
                 <Stack justify='center' align='flex-start' spacing='12px'>
@@ -224,7 +224,7 @@ const CardList = () => {
                     <Input
                       placeholder='코인 개수'
                       size='xs'
-                      value={inputValues[coin.coinName] || ''}
+                      // value={inputValues[coin.coinName] || ''}
                       // onChange={(e) =>
                       //   setInputValues((prevInputValues) => ({
                       //     ...prevInputValues,

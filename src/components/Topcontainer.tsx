@@ -1,21 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { Button, Stack, Text, Box, Input, Image } from '@chakra-ui/react';
-import { infoState } from '../atoms/info';
-import { useRecoilState } from 'recoil';
 import { DEFAULT_URL } from '../constant';
+import { UserData } from '../type';
 
 const Topcontainer = () => {
-  const [myInfo, setMyInfo] = useRecoilState(infoState);
-  const [myHoldings, setMyHoldings] = useState({});
-  const [loginId, setLoginId] = useState(null);
+  const [myHoldings, setMyHoldings] = useState<
+    {
+      wap: number;
+      app: number;
+      mut: number;
+      pknu: number;
+      pus: number;
+      pufs: number;
+    }[]
+  >([]);
+  const [userInfo, setUserInfo] = useState<UserData>(
+    (localStorage.getItem('WAM_Localstorage') as UserData) ?? null
+  );
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
 
-  const loginIdChange = (event) => {
+  const loginIdChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUserId(event.target.value);
   };
 
-  const phoneChange = (event) => {
+  const phoneChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
@@ -27,58 +36,45 @@ const Topcontainer = () => {
 
     fetch(`${DEFAULT_URL}/api/Coin/login`, {
       method: 'POST',
-      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
-      .then((response) => response.text())
-      .then((data) => {
-        localStorage.setItem('WAM_Localstorage', data);
-        setLoginId(data);
-        // getMyInfo();
+      .then((response) => response.json())
+      .then((data: any) => {
+        console.log(data);
+        localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
+        setUserInfo(data);
         getMyHoldings();
+        setUserId('');
+        setPassword('');
       });
   };
 
-  // const getMyInfo = () => {
-  //   var id = localStorage.getItem('id');
-
-  //   fetch(`http://localhost:8080/api/my-info/${id}`, {
-  //     method: 'GET',
-  //     headers: { 'Content-Type': 'application/json' },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setMyInfo(data);
-  //     });
-  // };
-
   const getMyHoldings = () => {
-    var id = localStorage.getItem('id');
-
-    fetch(`${DEFAULT_URL}/api/Coin/holdings/${id}`, {
+    fetch(`${DEFAULT_URL}/api/Coin/holdings/${userInfo?.id ?? 0}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => response.json())
       .then((data) => {
         setMyHoldings(data);
-        console.log(myHoldings);
       });
   };
 
   useEffect(() => {
-    var id = localStorage.getItem('id');
-    setLoginId(id);
-    if (id !== null) {
-      // getMyInfo(); //리소스가 갱신되었을 경우 새로고침시 확인할 수 있어야함
-      getMyHoldings();
-    }
-  }, []);
+    setUserInfo(
+      localStorage?.getItem('WAM_Localstorage')
+        ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
+        : null
+    );
+    getMyHoldings();
+  }, [localStorage.getItem('WAM_Localstorage')]);
+
+  console.log(userInfo);
 
   return (
     <>
-      {!loginId ? (
+      {!userInfo ? (
         <Stack justify='center' align='flex-start' spacing='16px'>
           <Box width='191px' height='90px' />
           <Stack
@@ -170,10 +166,15 @@ const Topcontainer = () => {
                   <Box width='191px' height='90px' />
                   <Stack>
                     <Text color='gray' fontWeight='bold'>
-                      {myInfo.crew}
+                      {userInfo.crew}
                     </Text>
                   </Stack>
-                  <Stack direction='row' justify='flex-start' align='center'>
+                  <Stack
+                    spacing={4}
+                    direction='row'
+                    justify='flex-start'
+                    align='center'
+                  >
                     <Text
                       fontFamily='Inter'
                       lineHeight='1.56'
@@ -181,11 +182,19 @@ const Topcontainer = () => {
                       fontSize='40px'
                       color='teal.900'
                     >
-                      {myInfo.userid}
+                      {userInfo.name}
                     </Text>
+                    <Button
+                      onClick={() => {
+                        setUserInfo(null);
+                        localStorage.removeItem('WAM_Localstorage');
+                      }}
+                    >
+                      로그아웃
+                    </Button>
                   </Stack>
                   <Stack direction='row' justify='flex-start' align='center'>
-                    <Text>총 잔고 : {myHoldings.wallet}</Text>
+                    <Text>총 잔고 : {userInfo.balance}</Text>
                   </Stack>
                 </Stack>
                 <Stack>
@@ -216,7 +225,7 @@ const Topcontainer = () => {
                   />
                 </Stack>
                 <Stack>
-                  <Text>X {myHoldings.wap}</Text>
+                  <Text>X {myHoldings[0]?.wap}</Text>
                 </Stack>
                 <Stack>
                   <Image
@@ -227,7 +236,7 @@ const Topcontainer = () => {
                   />
                 </Stack>
                 <Stack>
-                  <Text>X {myHoldings.app}</Text>
+                  <Text>X {myHoldings[0]?.app}</Text>
                 </Stack>
                 <Stack>
                   <Image
@@ -238,7 +247,7 @@ const Topcontainer = () => {
                   />
                 </Stack>
                 <Stack>
-                  <Text>X {myHoldings.mut}</Text>
+                  <Text>X {myHoldings[0]?.mut}</Text>
                 </Stack>
                 <Stack>
                   <Image
@@ -249,7 +258,7 @@ const Topcontainer = () => {
                   />
                 </Stack>
                 <Stack>
-                  <Text>X {myHoldings.pknu}</Text>
+                  <Text>X {myHoldings[0]?.pknu}</Text>
                 </Stack>
                 <Stack>
                   <Image
@@ -260,7 +269,7 @@ const Topcontainer = () => {
                   />
                 </Stack>
                 <Stack>
-                  <Text>X {myHoldings.pus}</Text>
+                  <Text>X {myHoldings[0]?.pus}</Text>
                 </Stack>
                 <Stack>
                   <Image
@@ -271,7 +280,7 @@ const Topcontainer = () => {
                   />
                 </Stack>
                 <Stack>
-                  <Text>X {myHoldings.pufs}</Text>
+                  <Text>X {myHoldings[0]?.pufs}</Text>
                 </Stack>
               </Stack>
             </Stack>
