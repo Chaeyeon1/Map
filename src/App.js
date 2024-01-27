@@ -50,7 +50,7 @@ const App = () => (
               <Ranking />
             </Stack>
             <Stack justify='flex-start' align='flex-start' spacing='32px'>
-              <CardList />
+              {/* <CardList /> */}
             </Stack>
           </Stack>
         </Stack>
