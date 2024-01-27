@@ -1,29 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Stack, Text, Box, Input, Image } from '@chakra-ui/react';
 import { infoState } from '../atoms/info';
-import { rankingState } from '../atoms/ranking';
 import { useRecoilState } from 'recoil';
 
 const Topcontainer = () => {
   const [myInfo, setMyInfo] = useRecoilState(infoState);
-  const [ranking, setRanking] = useRecoilState(rankingState);
+  const [myHoldings, setMyHoldings] = useState({});
   const [loginId, setLoginId] = useState(null);
+  const [loginInput, setLoginInput] = useState({
+    id : undefined,
+    phone : undefined,
+  });
+
+  const loginIdChange = (event) => {
+    loginInput.id = event.target.value;
+  };
+
+  const phoneChange = (event) => {
+    loginInput.phone = event.target.value;
+  };
 
   const login = () => {
-    fetch('/login/1', {
-      method: 'GET',
+    console.log(loginInput);
+    fetch('http://localhost:8080/login', {
+      method: 'POST',
+      credentials: "include",
       headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(loginInput)
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((data) => {
-        localStorage.setItem('id', data.id);
-        setLoginId(data.id);
+        localStorage.setItem('id', data);
+        setLoginId(data);
         getMyInfo();
+        getMyHoldings();
       });
   };
 
   const getMyInfo = () => {
+<<<<<<< HEAD
     fetch('http://localhost:5202/api/coin/holdings/1', {
+=======
+    var id = localStorage.getItem("id");
+
+    fetch('http://localhost:8080/api/my-info/'+id, {
+>>>>>>> b14a70522d804657defaa81df1bfc3afc6dca643
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -33,25 +54,28 @@ const Topcontainer = () => {
       });
   };
 
-  const getRanking = () => {
-    fetch('/ranking', {
+  const getMyHoldings = () => {
+    var id = localStorage.getItem("id");
+
+    fetch('http://localhost:8080/api/holdings/'+id, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => response.json())
       .then((data) => {
-        setRanking(data);
+        setMyHoldings(data);
+        console.log(myHoldings);
       });
   };
 
   useEffect(() => {
     var id = localStorage.getItem('id');
     setLoginId(id);
-    getMyInfo(); //리소스가 갱신되었을 경우 새로고침시 확인할 수 있어야함
-    getRanking();
+    if(id!==null){
+      getMyInfo(); //리소스가 갱신되었을 경우 새로고침시 확인할 수 있어야함
+      getMyHoldings();
+    }
   }, []);
-
-  console.log(ranking);
 
   return (
     <>
@@ -97,7 +121,7 @@ const Topcontainer = () => {
                 >
                   닉네임
                 </Text>
-                <Input placeholder='Placeholder' size='xs' />
+                <Input placeholder='Placeholder' size='xs' type='text' value={loginInput.id} onChange={loginIdChange} />
               </Stack>
               <Stack direction='row' justify='flex-start' align='center'>
                 <Text
@@ -109,7 +133,7 @@ const Topcontainer = () => {
                 >
                   전화번호
                 </Text>
-                <Input placeholder='Placeholder' size='xs' />
+                <Input placeholder='Placeholder' size='xs' type='text' value={loginInput.phone} onChange={phoneChange} />
               </Stack>
             </Stack>
             <Stack justify='flex-start' align='center' background='gray.50'>
@@ -133,6 +157,11 @@ const Topcontainer = () => {
             >
               <Stack justify='center' align='flex-start' spacing='12px'>
                 <Box width='191px' height='90px' />
+                <Stack>
+                  <Text color="gray" fontWeight="bold"
+                  >{myInfo.crew}
+                  </Text>
+                </Stack>
                 <Stack direction='row' justify='flex-start' align='center'> 
                   <Text
                     fontFamily='Inter'
@@ -141,12 +170,12 @@ const Topcontainer = () => {
                     fontSize='40px'
                     color='teal.900'
                   >
-                    {loginId}
+                  {myInfo.userid}
                   </Text>
                 </Stack>
                 <Stack direction='row' justify='flex-start' align='center'>
                   <Text>
-                    총 잔고 : {myInfo.bits}
+                    총 잔고 : {myHoldings.wallet}
                   </Text>
                 </Stack>
               </Stack>
@@ -172,79 +201,79 @@ const Topcontainer = () => {
               <Stack>
                 <Image
                     borderRadius="full"
-                    boxSize="20px" // 이미지 크기를 조절할 수 있습니다.
-                    src="https://example.com/my-image.jpg" // 이미지 주소를 지정하세요.
+                    boxSize="30px" // 이미지 크기를 조절할 수 있습니다.
+                    src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2F89ece8a5-4cb7-4f1e-9732-cefc4e88143d%2F5.png?table=block&id=8154c28d-0b07-439b-ae59-b04be0da338e&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2" // 이미지 주소를 지정하세요.
                     alt="My Image"
                   />
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.WAP}
+                  X {myHoldings.wap}
                 </Text>
               </Stack>
               <Stack>
                 <Image
                     borderRadius="full"
-                    boxSize="20px" // 이미지 크기를 조절할 수 있습니다.
-                    src="https://example.com/my-image.jpg" // 이미지 주소를 지정하세요.
+                    boxSize="30px" // 이미지 크기를 조절할 수 있습니다.
+                    src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2F76aca0db-ac99-41e4-91a4-7dc234081246%2F17.png?table=block&id=c1779c4c-fb0e-48a1-a5ae-f21ccd5fcbd4&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2" // 이미지 주소를 지정하세요.
                     alt="My Image"
                   />
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.APP}
+                  X {myHoldings.app}
                 </Text>
               </Stack>
               <Stack>
                 <Image
                     borderRadius="full"
-                    boxSize="20px" // 이미지 크기를 조절할 수 있습니다.
-                    src="https://example.com/my-image.jpg" // 이미지 주소를 지정하세요.
+                    boxSize="30px" // 이미지 크기를 조절할 수 있습니다.
+                    src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2Fe37bbcea-6eb8-428b-836c-1354a74e0f43%2F15.png?table=block&id=4a56cd03-8aeb-4b54-81f7-7ada2d7d14e8&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2" // 이미지 주소를 지정하세요.
                     alt="My Image"
                   />
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.MUT}
+                  X {myHoldings.mut}
                 </Text>
               </Stack>
               <Stack>
                 <Image
                     borderRadius="full"
-                    boxSize="20px" // 이미지 크기를 조절할 수 있습니다.
-                    src="https://example.com/my-image.jpg" // 이미지 주소를 지정하세요.
+                    boxSize="30px" // 이미지 크기를 조절할 수 있습니다.
+                    src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2Fbcddc3c3-ffbe-4ebd-84d2-0f9f93107b8f%2Fimage_9.png?table=block&id=b07165f1-cb1d-403b-bcfd-5bd20873bf95&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2" // 이미지 주소를 지정하세요.
                     alt="My Image"
                   />
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.PKNU}
+                  X {myHoldings.pknu}
                 </Text>
               </Stack>
               <Stack>
                 <Image
                     borderRadius="full"
-                    boxSize="20px" // 이미지 크기를 조절할 수 있습니다.
-                    src="https://example.com/my-image.jpg" // 이미지 주소를 지정하세요.
+                    boxSize="30px" // 이미지 크기를 조절할 수 있습니다.
+                    src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2Fb8404fda-9ec2-48b9-8699-a7302f4729cd%2Fimage_11.png?table=block&id=334253dd-b86d-4487-b658-508283e82d89&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2" // 이미지 주소를 지정하세요.
                     alt="My Image"
                   />
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.PUS}
+                  X {myHoldings.pus}
                 </Text>
               </Stack>
               <Stack>
                 <Image
                     borderRadius="full"
-                    boxSize="20px" // 이미지 크기를 조절할 수 있습니다.
-                    src="https://example.com/my-image.jpg" // 이미지 주소를 지정하세요.
+                    boxSize="30px" // 이미지 크기를 조절할 수 있습니다.
+                    src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2F2cb6010d-a455-4707-a00b-9c43822eb09c%2Fimage_8.png?table=block&id=2bf46c88-8212-4aac-abfa-20703d648567&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2" // 이미지 주소를 지정하세요.
                     alt="My Image"
                   />
               </Stack>
               <Stack>
                 <Text>
-                  X {myInfo.PUFS}
+                  X {myHoldings.pufs}
                 </Text>
               </Stack>
             </Stack>

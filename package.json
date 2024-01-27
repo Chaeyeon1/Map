@@ -51,5 +51,9 @@
       "public"
     ]
   },
+<<<<<<< HEAD
   "proxy": "http://localhost:5202"
+=======
+  "proxy" : "http://localhost:8080"
+>>>>>>> b14a70522d804657defaa81df1bfc3afc6dca643
 }
