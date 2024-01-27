@@ -7,3 +7,24 @@ export type UserData = {
   phonenum: string;
   admin: boolean;
 } | null;
+
+export type HoldingData =
+  | {
+      wap: number;
+      app: number;
+      mut: number;
+      pknu: number;
+      pus: number;
+      pufs: number;
+    }[]
+  | null;
+
+export type CoinData = {
+  id: number;
+  coinName: string;
+  prevPrice: number;
+  currentPrice: number;
+  nextRate: number;
+}[];
+
+export type CoinList = "wap" | "app" | "mut" | "pknu" | "pus" | "pufs";

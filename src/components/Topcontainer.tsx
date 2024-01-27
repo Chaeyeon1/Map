@@ -1,7 +1,7 @@
-import { useState, useEffect, ChangeEvent } from 'react';
-import { Button, Stack, Text, Box, Input, Image } from '@chakra-ui/react';
-import { DEFAULT_URL } from '../constant';
-import { UserData } from '../type';
+import { useState, useEffect, ChangeEvent } from "react";
+import { Button, Stack, Text, Box, Input, Image } from "@chakra-ui/react";
+import { DEFAULT_URL } from "../constant";
+import { UserData } from "../type";
 
 const Topcontainer = () => {
   const [myHoldings, setMyHoldings] = useState<
@@ -15,10 +15,10 @@ const Topcontainer = () => {
     }[]
   >([]);
   const [userInfo, setUserInfo] = useState<UserData>(
-    (localStorage.getItem('WAM_Localstorage') as UserData) ?? null
+    (localStorage.getItem("WAM_Localstorage") as UserData) ?? null
   );
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
 
   const loginIdChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUserId(event.target.value);
@@ -35,25 +35,25 @@ const Topcontainer = () => {
     };
 
     fetch(`${DEFAULT_URL}/api/Coin/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     })
       .then((response) => response.json())
       .then((data: any) => {
         console.log(data);
-        localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
+        localStorage.setItem("WAM_Localstorage", JSON.stringify(data));
         setUserInfo(data);
         getMyHoldings();
-        setUserId('');
-        setPassword('');
+        setUserId("");
+        setPassword("");
       });
   };
 
   const getMyHoldings = () => {
     fetch(`${DEFAULT_URL}/api/Coin/holdings/${userInfo?.id ?? 0}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
     })
       .then((response) => response.json())
       .then((data) => {
@@ -63,14 +63,15 @@ const Topcontainer = () => {
 
   useEffect(() => {
     setUserInfo(
-      localStorage?.getItem('WAM_Localstorage')
-        ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
+      localStorage?.getItem("WAM_Localstorage")
+        ? JSON.parse(localStorage?.getItem("WAM_Localstorage") ?? "")
         : null
     );
     getMyHoldings();
-  }, [localStorage.getItem('WAM_Localstorage')]);
+  }, [localStorage.getItem("WAM_Localstorage")]);
 
   console.log(userInfo);
+  console.log(myHoldings);
 
   return (
     <>
@@ -187,7 +188,7 @@ const Topcontainer = () => {
                     <Button
                       onClick={() => {
                         setUserInfo(null);
-                        localStorage.removeItem('WAM_Localstorage');
+                        localStorage.removeItem("WAM_Localstorage");
                       }}
                     >
                       로그아웃
