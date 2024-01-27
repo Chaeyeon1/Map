@@ -12,6 +12,6 @@ export const userInfoState = atom<UserData>({
 
 export const holdingsState = atom<HoldingData>({
   key: 'holdingData',
-  default: null,
+  default: [],
   effects_UNSTABLE: [persistAtom],
 });

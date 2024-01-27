@@ -23,11 +23,12 @@ const Ranking = () => {
 
   return (
     <Stack
-      paddingX='40px'
-      paddingY='20px'
+      width='180px'
+      height='200px'
+      px='12px'
       borderRadius='20000px'
-      justify='flex-start'
-      align='center'
+      justify='center'
+      alignItems='center'
       background='gray.50'
     >
       <Text

@@ -27,4 +27,4 @@ export type CoinData = {
   nextRate: number;
 }[];
 
-export type CoinList = "wap" | "app" | "mut" | "pknu" | "pus" | "pufs";
+export type CoinList = 'wap' | 'app' | 'mut' | 'pknu' | 'pus' | 'pufs';

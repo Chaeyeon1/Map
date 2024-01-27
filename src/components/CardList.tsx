@@ -1,25 +1,25 @@
-import { Box, Button, Input, Stack, Text, Image, Grid } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { DEFAULT_URL } from "../constant";
-import { useRecoilState } from "recoil";
-import { holdingsState, userInfoState } from "../atoms/info";
-import { getMyHoldings } from "../api/getMyHoldings";
-import { CoinData, CoinList, UserData } from "../type";
+import { Box, Button, Input, Stack, Text, Image, Grid } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { DEFAULT_URL } from '../constant';
+import { useRecoilState } from 'recoil';
+import { holdingsState, userInfoState } from '../atoms/info';
+import { getMyHoldings } from '../api/getMyHoldings';
+import { CoinData, CoinList, UserData } from '../type';
 
 const CardList = () => {
   const [coins, setCoins] = useState<CoinData>([]);
   const [myHoldings, setMyHoldings] = useRecoilState(holdingsState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [images] = useState([
-    "https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2F89ece8a5-4cb7-4f1e-9732-cefc4e88143d%2F5.png?table=block&id=8154c28d-0b07-439b-ae59-b04be0da338e&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2",
-    "https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2F76aca0db-ac99-41e4-91a4-7dc234081246%2F17.png?table=block&id=c1779c4c-fb0e-48a1-a5ae-f21ccd5fcbd4&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2",
-    "https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2Fe37bbcea-6eb8-428b-836c-1354a74e0f43%2F15.png?table=block&id=4a56cd03-8aeb-4b54-81f7-7ada2d7d14e8&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2",
-    "https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2Fbcddc3c3-ffbe-4ebd-84d2-0f9f93107b8f%2Fimage_9.png?table=block&id=b07165f1-cb1d-403b-bcfd-5bd20873bf95&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2",
-    "https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2Fb8404fda-9ec2-48b9-8699-a7302f4729cd%2Fimage_11.png?table=block&id=334253dd-b86d-4487-b658-508283e82d89&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2",
-    " https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2F2cb6010d-a455-4707-a00b-9c43822eb09c%2Fimage_8.png?table=block&id=2bf46c88-8212-4aac-abfa-20703d648567&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2",
+    'https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2F89ece8a5-4cb7-4f1e-9732-cefc4e88143d%2F5.png?table=block&id=8154c28d-0b07-439b-ae59-b04be0da338e&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2',
+    'https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2F76aca0db-ac99-41e4-91a4-7dc234081246%2F17.png?table=block&id=c1779c4c-fb0e-48a1-a5ae-f21ccd5fcbd4&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2',
+    'https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2Fe37bbcea-6eb8-428b-836c-1354a74e0f43%2F15.png?table=block&id=4a56cd03-8aeb-4b54-81f7-7ada2d7d14e8&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2',
+    'https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2Fbcddc3c3-ffbe-4ebd-84d2-0f9f93107b8f%2Fimage_9.png?table=block&id=b07165f1-cb1d-403b-bcfd-5bd20873bf95&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2',
+    'https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2Fb8404fda-9ec2-48b9-8699-a7302f4729cd%2Fimage_11.png?table=block&id=334253dd-b86d-4487-b658-508283e82d89&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2',
+    ' https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2F2cb6010d-a455-4707-a00b-9c43822eb09c%2Fimage_8.png?table=block&id=2bf46c88-8212-4aac-abfa-20703d648567&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2',
   ]);
   const [coininfo, setCoinInfo] = useState<UserData>(
-    (localStorage.getItem("WAM_Localstorage") as UserData) ?? null
+    (localStorage.getItem('WAM_Localstorage') as UserData) ?? null
   );
   // const [coinsellinfo, setCoinSellInfo] = useState<UserData>(
   //   (localStorage.getItem("WAM_Localstorage") as UserData) ?? null
@@ -30,8 +30,8 @@ const CardList = () => {
 
   const getCoins = () => {
     fetch(`${DEFAULT_URL}/api/Coin/coin`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => response.json())
       .then((coinData) => {
@@ -47,14 +47,14 @@ const CardList = () => {
     };
 
     fetch(`${DEFAULT_URL}/api/Coin/coin/buy`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
       .then((response) => response.json())
       .then((data: any) => {
         console.log(data);
-        localStorage.setItem("WAM_Localstorage", JSON.stringify(data));
+        localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
         setId(data);
         setCoinId(null);
         setCount(null);
@@ -69,14 +69,14 @@ const CardList = () => {
     };
 
     fetch(`${DEFAULT_URL}/api/Coin/coin/sell`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
       .then((response) => response.json())
       .then((data: any) => {
         console.log(data);
-        localStorage.setItem("WAM_Localstorage", JSON.stringify(data));
+        localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
         setId(data);
         setCoinId(null);
         setCount(null);
@@ -85,8 +85,8 @@ const CardList = () => {
 
   useEffect(() => {
     setCoinInfo(
-      localStorage?.getItem("WAM_Localstorage")
-        ? JSON.parse(localStorage?.getItem("WAM_Localstorage") ?? "")
+      localStorage?.getItem('WAM_Localstorage')
+        ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
         : null
     );
     getCoins();
@@ -94,8 +94,8 @@ const CardList = () => {
 
   useEffect(() => {
     setUserInfo(
-      localStorage?.getItem("WAM_Localstorage")
-        ? JSON.parse(localStorage?.getItem("WAM_Localstorage") ?? "")
+      localStorage?.getItem('WAM_Localstorage')
+        ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
         : null
     );
 
@@ -112,12 +112,12 @@ const CardList = () => {
 
         // setCoins(mappedCoins);
       });
-  }, [localStorage.getItem("WAM_Localstorage")]);
+  }, [localStorage.getItem('WAM_Localstorage')]);
 
   return (
     <Grid templateColumns='repeat(2, 1fr)' gap={10}>
       {coins.map((coin, index) => {
-        let currentCoin: CoinList = "wap";
+        let currentCoin: CoinList = 'wap';
 
         for (let coinName in myHoldings?.[0]) {
           if (coinName === coin.coinName.toLowerCase()) {
