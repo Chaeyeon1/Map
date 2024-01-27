@@ -22,40 +22,40 @@ const CardList = () => {
     ' https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F2cb6d644-e222-4941-af94-3c4bc006f7f7%2F2cb6010d-a455-4707-a00b-9c43822eb09c%2Fimage_8.png?table=block&id=2bf46c88-8212-4aac-abfa-20703d648567&spaceId=2cb6d644-e222-4941-af94-3c4bc006f7f7&width=1000&userId=045ecacb-745d-4b23-b5be-cdfd7e1ebe1d&cache=v2',
   ]);
 
-  // const getCoins = async () => {
-  //   try {
-  //     const response = await fetch('/coin', {
-  //       method: 'GET',
-  //       headers: { 'Content-Type': 'application/json' },
-  //     });
-  //     const coinData = await response.json();
-  //     console.log(coinData);
+  const getCoins = async () => {
+    try {
+      const response = await fetch('/coin', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const coinData = await response.json();
+      console.log(coinData);
 
-  //     const holdingResponse = await fetch('/holding/1', {
-  //       method: 'GET',
-  //       headers: { 'Content-Type': 'application/json' },
-  //     });
-  //     const holdingData = await holdingResponse.json();
-  //     console.log(holdingData);
+      const holdingResponse = await fetch('/holding/1', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const holdingData = await holdingResponse.json();
+      console.log(holdingData);
 
-  //     setCoinsNum(holdingData.coinNum);
+      setCoinsNum(holdingData.coinNum);
 
-  //     const mappedCoins = coinData.map((coin) => ({
-  //       ...coin,
-  //       coinsNumber: holdingData.coinNum[coin.coinName.toUpperCase()] || 0,
-  //     }));
+      const mappedCoins = coinData.map((coin: any) => ({
+        ...coin,
+        coinsNumber: holdingData.coinNum[coin.toUpperCase()] || 0,
+      }));
 
-  //     setCoins(mappedCoins);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
+      setCoins(mappedCoins);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
-  // useEffect(() => {
-  //   getCoins();
-  // }, []);
+  useEffect(() => {
+    getCoins();
+  }, []);
 
-  // const coinBuy = (coinName) => {
+  // const coinBuy = (coinName: string) => {
   //   const inputValue = inputValues[coinName] || '';
 
   //   const amountToBuy = parseFloat(inputValue);
@@ -76,7 +76,7 @@ const CardList = () => {
   //   }));
   // };
 
-  // const coinSell = (coinName) => {
+  // const coinSell = (coinName: string) => {
   //   const inputValue = inputValues[coinName] || '';
 
   //   const amountToSell = parseFloat(inputValue);
