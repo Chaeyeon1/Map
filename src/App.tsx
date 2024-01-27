@@ -4,6 +4,7 @@ import { RecoilRoot } from 'recoil';
 import { Stack } from '@chakra-ui/react';
 import Ranking from './components/Ranking';
 import Logo from './components/Logo';
+import CardList from './components/CardList';
 
 const App = () => (
   <RecoilRoot>
@@ -31,7 +32,7 @@ const App = () => (
           </Stack>
         </Stack>
         <Stack justify='flex-start' align='flex-start' spacing='32px'>
-          {/* <CardList /> */}
+          <CardList />
         </Stack>
       </Stack>
     </ChakraProvider>

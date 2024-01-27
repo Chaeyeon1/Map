@@ -8,8 +8,6 @@ export type UserData = {
   admin: boolean;
 } | null;
 
-export type CoinList = 'wap' | 'app' | 'mut' | 'pknu' | 'pus' | 'pufs';
-
 export type HoldingData =
   | {
       wap: number;
@@ -18,4 +16,15 @@ export type HoldingData =
       pknu: number;
       pus: number;
       pufs: number;
-    }[];
+    }[]
+  | null;
+
+export type CoinData = {
+  id: number;
+  coinName: string;
+  prevPrice: number;
+  currentPrice: number;
+  nextRate: number;
+}[];
+
+export type CoinList = 'wap' | 'app' | 'mut' | 'pknu' | 'pus' | 'pufs';
