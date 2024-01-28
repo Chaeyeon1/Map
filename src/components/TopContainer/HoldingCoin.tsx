@@ -1,9 +1,7 @@
-import { GridItem, Image, Stack, Text, WrapItem } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import { Image, Stack, Text, WrapItem } from '@chakra-ui/react';
 import { CoinList } from '../../type';
 import { useRecoilState } from 'recoil';
-import { holdingsState, userInfoState } from '../../atoms/info';
-import { getMyHoldings } from '../../api/getMyHoldings';
+import { holdingsState } from '../../atoms/info';
 
 const HoldingCoin = ({
   src,
@@ -12,16 +10,7 @@ const HoldingCoin = ({
   src: string;
   coinName: CoinList;
 }) => {
-  const [myHoldings, setMyHoldings] = useRecoilState(holdingsState);
-  const [userInfo] = useRecoilState(userInfoState);
-
-  useEffect(() => {
-    getMyHoldings(userInfo)
-      .then((response) => response.json())
-      .then((data) => {
-        setMyHoldings(data);
-      });
-  }, [userInfo]);
+  const [myHoldings] = useRecoilState(holdingsState);
 
   return (
     <WrapItem>
@@ -30,7 +19,7 @@ const HoldingCoin = ({
           <Image borderRadius='full' boxSize='30px' src={src} alt='My Image' />
         </Stack>
         <Stack>
-          <Text>X {myHoldings[0]?.[coinName]}</Text>
+          <Text>X {myHoldings?.[0]?.[coinName]}</Text>
         </Stack>
       </Stack>
     </WrapItem>

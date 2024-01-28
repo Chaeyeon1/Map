@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Grid, Stack, Wrap, useMediaQuery } from '@chakra-ui/react';
+import { Stack, useMediaQuery } from '@chakra-ui/react';
 import LoginForm from './LoginForm';
 import { holdingsState, userInfoState } from '../../atoms/info';
 import { useRecoilState } from 'recoil';

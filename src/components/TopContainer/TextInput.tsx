@@ -30,7 +30,6 @@ const TextInput = () => {
     })
       .then((response) => response.json())
       .then((data: any) => {
-        console.log(data);
         localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
         setUserInfo(
           localStorage?.getItem('WAM_Localstorage')
@@ -62,10 +61,10 @@ const TextInput = () => {
             color='#000000'
             width='70px'
           >
-            닉네임
+            이름
           </Text>
           <Input
-            placeholder='Placeholder'
+            placeholder='ID'
             size='xs'
             type='text'
             value={userId}
@@ -83,7 +82,7 @@ const TextInput = () => {
             전화번호
           </Text>
           <Input
-            placeholder='Placeholder'
+            placeholder='Password'
             size='xs'
             type='text'
             value={password}

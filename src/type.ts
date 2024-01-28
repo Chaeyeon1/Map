@@ -25,6 +25,12 @@ export type CoinData = {
   prevPrice: number;
   currentPrice: number;
   nextRate: number;
-}[];
+};
+
+export type CoinDatas = CoinData[];
 
 export type CoinList = 'wap' | 'app' | 'mut' | 'pknu' | 'pus' | 'pufs';
+export type CoinContextType = {
+  coin: CoinData;
+  index: number;
+};
