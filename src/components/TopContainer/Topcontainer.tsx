@@ -10,7 +10,7 @@ import Ranking from '../Ranking';
 const Topcontainer = () => {
   const [, setMyHoldings] = useRecoilState(holdingsState);
   const [userInfo] = useRecoilState(userInfoState);
-  const [isDesktop] = useMediaQuery('(min-width: 650px)');
+  const [isDesktop] = useMediaQuery('(min-width: 689px)');
 
   useEffect(() => {
     getMyHoldings(userInfo)
@@ -21,7 +21,12 @@ const Topcontainer = () => {
   }, [userInfo]);
 
   return (
-    <Stack direction='row'>
+    <Stack
+      justifyContent={isDesktop ? 'space-between' : 'center'}
+      width='100%'
+      direction='row'
+      p={8}
+    >
       <Stack>{!userInfo ? <LoginForm /> : <MyProfile />}</Stack>
       {isDesktop && <Ranking />}
     </Stack>

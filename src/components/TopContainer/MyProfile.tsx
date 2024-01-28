@@ -4,6 +4,7 @@ import { holdingsState, userInfoState } from '../../atoms/info';
 import MyProfileCompany from './MyProfileCompany';
 import MyProfileBank from './MyProfileBank';
 import HoldingCoins from './HoldingCoins';
+import { Drawer } from '../Drawer';
 
 const MyProfile = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
@@ -34,6 +35,7 @@ const MyProfile = () => {
             >
               {userInfo?.name}
             </Text>
+            <Drawer />
             <Button
               colorScheme='linkedin'
               variant='outline'

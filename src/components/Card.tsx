@@ -6,16 +6,9 @@ const Card = ({ children }: { children: ReactNode }) => {
     <Stack
       padding='16px'
       borderRadius='8px'
-      justify='center'
-      align='flex-start'
-      spacing='12px'
       borderColor='teal.500'
-      borderStartWidth='1px'
-      borderEndWidth='1px'
-      borderTopWidth='1px'
-      borderBottomWidth='1px'
-      width='354px'
-      maxWidth='100%'
+      borderWidth='1px'
+      width='340px'
     >
       {children}
     </Stack>

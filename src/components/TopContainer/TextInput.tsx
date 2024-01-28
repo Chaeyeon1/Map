@@ -91,7 +91,9 @@ const TextInput = () => {
         </Stack>
       </Stack>
       <Stack justify='flex-start' align='center' background='gray.50'>
-        <Button onClick={login}>입력</Button>
+        <Button colorScheme='linkedin' variant='outline' onClick={login}>
+          입력
+        </Button>
       </Stack>
     </Stack>
   );

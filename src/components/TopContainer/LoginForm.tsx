@@ -8,7 +8,6 @@ const LoginForm = () => {
       justifyContent='center'
       align='flex-start'
       spacing='16px'
-      mr={20}
     >
       <Text
         fontFamily='Inter'

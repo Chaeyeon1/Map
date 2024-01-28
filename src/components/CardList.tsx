@@ -1,4 +1,4 @@
-import { Grid } from '@chakra-ui/react';
+import { Wrap } from '@chakra-ui/react';
 import { createContext, useEffect, useState } from 'react';
 import { DEFAULT_URL } from '../constant';
 import { CoinContextType, CoinDatas } from '../type';
@@ -27,15 +27,15 @@ const CardList = () => {
   }, []);
 
   return (
-    <Grid templateColumns='repeat(2, 1fr)' gap={10}>
+    <Wrap gap={10} justify='center'>
       {coins.map((coin) => {
         return (
-          <CardContext.Provider value={{ coin, index: coin.id }}>
+          <CardContext.Provider key={coin.id} value={{ coin, index: coin.id }}>
             <Coins />
           </CardContext.Provider>
         );
       })}
-    </Grid>
+    </Wrap>
   );
 };
 
