@@ -51,15 +51,10 @@ const CoinChange = () => {
   return (
     <Stack direction='row' justify='flex-start' align='center'>
       <Input type='number' placeholder='코인 개수' size='xs' />
-      <Button size='xs' variant='outline' colorScheme='red' onClick={coinBuy}>
+      <Button size='xs' variant='outline' colorScheme='green' onClick={coinBuy}>
         매수
       </Button>
-      <Button
-        size='xs'
-        variant='outline'
-        colorScheme='green'
-        onClick={coinSell}
-      >
+      <Button size='xs' variant='outline' colorScheme='red' onClick={coinSell}>
         매도
       </Button>
     </Stack>

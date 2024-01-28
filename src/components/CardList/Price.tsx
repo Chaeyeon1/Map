@@ -7,11 +7,11 @@ import ChangeRate from './ChangeRate';
 const Price = () => {
   return (
     <Stack justify='center' align='flex-start'>
-      <CurrentPrice />
-      <Stack direction='row' justify='flex-start' align='center' spacing='32px'>
-        <PrevPrice />
+      <Stack direction='row' justify='flex-start' align='center' spacing='12px'>
+        <CurrentPrice />
         <ChangeRate />
       </Stack>
+      <PrevPrice />
     </Stack>
   );
 };

@@ -12,9 +12,8 @@ const PrevPrice = () => {
         lineHeight='1.43'
         fontWeight='semibold'
         fontSize='14px'
-        color='#FF5353'
       >
-        {coin.prevPrice}
+        종전가 : {coin.prevPrice}
       </Text>
     </Stack>
   );

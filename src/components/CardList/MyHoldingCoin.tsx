@@ -25,7 +25,7 @@ const MyHoldingCoin = () => {
       fontSize='14px'
       color='#000000'
     >
-      {myHoldings?.[0]?.[currentCoin] ?? ''}
+      보유 코인 : {myHoldings?.[0]?.[currentCoin] ?? ''}
     </Text>
   );
 };

@@ -4,17 +4,11 @@ import {
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  IconButton,
-  Stack,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
-import CoinRateList from './Admin/CoinRateList';
-import { RepeatIcon } from '@chakra-ui/icons';
 import ChangeRate from './Admin/ChangeRate';
 import ChangeTime from './Admin/ChangeTime';
 
@@ -24,7 +18,7 @@ export const Drawer = () => {
 
   return (
     <>
-      <Button ref={btnRef} colorScheme='linkedin' onClick={onOpen}>
+      <Button size='sm' ref={btnRef} colorScheme='linkedin' onClick={onOpen}>
         설정
       </Button>
       <ChakraDrawer

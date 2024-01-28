@@ -3,7 +3,7 @@ import HoldingCoin from './HoldingCoin';
 
 const HoldingCoins = () => {
   return (
-    <Wrap gap={4}>
+    <Wrap gap={4} maxWidth='340px'>
       <HoldingCoin src={'/wap.png'} coinName='wap' />
       <HoldingCoin src={'/mus.png'} coinName='mut' />
       <HoldingCoin src={'/APPTIVE.png'} coinName='app' />

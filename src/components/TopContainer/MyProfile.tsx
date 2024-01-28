@@ -1,4 +1,4 @@
-import { Button, Stack, Text } from '@chakra-ui/react';
+import { Button, Stack, Text, useMediaQuery } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
 import { holdingsState, userInfoState } from '../../atoms/info';
 import MyProfileCompany from './MyProfileCompany';
@@ -9,6 +9,7 @@ import { Drawer } from '../Drawer';
 const MyProfile = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [, setMyHoldings] = useRecoilState(holdingsState);
+  const [isDesktop] = useMediaQuery('(min-width: 350px)');
 
   return (
     <>
@@ -21,10 +22,9 @@ const MyProfile = () => {
         <Stack justify='center' align='flex-start' spacing='12px'>
           <MyProfileCompany />
           <Stack
-            spacing={4}
-            direction='row'
-            justify='flex-start'
-            align='center'
+            spacing={isDesktop ? 4 : 1}
+            direction={isDesktop ? 'row' : 'column'}
+            align={isDesktop ? 'center' : undefined}
           >
             <Text
               fontFamily='Inter'
@@ -35,18 +35,21 @@ const MyProfile = () => {
             >
               {userInfo?.name}
             </Text>
-            <Drawer />
-            <Button
-              colorScheme='linkedin'
-              variant='outline'
-              onClick={() => {
-                setUserInfo(null);
-                localStorage.removeItem('WAM_Localstorage');
-                setMyHoldings([]);
-              }}
-            >
-              로그아웃
-            </Button>
+            <Stack spacing={2} direction='row'>
+              {userInfo?.admin && <Drawer />}
+              <Button
+                size='sm'
+                colorScheme='linkedin'
+                variant='outline'
+                onClick={() => {
+                  setUserInfo(null);
+                  localStorage.removeItem('WAM_Localstorage');
+                  setMyHoldings([]);
+                }}
+              >
+                로그아웃
+              </Button>
+            </Stack>
           </Stack>
           <MyProfileBank />
         </Stack>

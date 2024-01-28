@@ -16,7 +16,7 @@ const Coins = () => {
   return (
     <WrapItem key={coin.id}>
       <Card>
-        <Stack direction='row'>
+        <Stack justifyContent='space-between' direction='row'>
           <CoinInfo />
           {userInfo && <MyHoldingCoin />}
         </Stack>

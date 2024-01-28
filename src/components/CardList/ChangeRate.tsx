@@ -4,6 +4,7 @@ import { CardContext } from '../CardList';
 
 const ChangeRate = () => {
   const { coin } = useContext(CardContext);
+  const changeRate = coin.currentPrice - coin.prevPrice;
 
   return (
     <Stack direction='row' justify='flex-start' align='center' spacing='4px'>
@@ -12,9 +13,9 @@ const ChangeRate = () => {
         lineHeight='1.43'
         fontWeight='semibold'
         fontSize='14px'
-        color='#FF5353'
+        color={changeRate > 0 ? '#FF5353' : 'blue'}
       >
-        {coin.currentPrice} - {coin.prevPrice}
+        {changeRate > 0 ? '▲' : '▼'} {changeRate}
       </Text>
     </Stack>
   );

@@ -14,7 +14,7 @@ const App = () => {
           <Stack
             maxWidth='700px'
             margin='0 auto'
-            py='120px'
+            py='40px'
             justifyContent='center'
             alignItems='center'
           >
