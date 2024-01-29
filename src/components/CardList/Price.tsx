@@ -1,5 +1,4 @@
 import { Stack } from '@chakra-ui/react';
-import React from 'react';
 import CurrentPrice from './CurrentPrice';
 import PrevPrice from './PrevPrice';
 import ChangeRate from './ChangeRate';

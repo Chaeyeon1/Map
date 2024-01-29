@@ -20,7 +20,7 @@ const CoinRateList = ({ index }: { index: number }) => {
   const [isModified, setIsModified] = useState(false);
 
   const getRate = () => {
-    fetch(`${DEFAULT_URL}/api/Coin/rate?id=${userInfo?.id}&coin=${index}`, {
+    fetch(`${DEFAULT_URL}/api/Coin/rate?id=${userInfo?.id}&coin=${index + 1}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -34,7 +34,7 @@ const CoinRateList = ({ index }: { index: number }) => {
   const updateCoinRate = async () => {
     const body = {
       id: userInfo?.id,
-      coin: index,
+      coin: index + 1,
       rate: Number(coinRate),
     };
 
@@ -45,10 +45,22 @@ const CoinRateList = ({ index }: { index: number }) => {
         body: JSON.stringify(body),
       });
 
+      fetch(
+        `${DEFAULT_URL}/api/Coin/rate?id=${userInfo?.id}&coin=${index + 1}`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+        .then((response) => response.json())
+        .then((rate) => {
+          setCoinRate(rate);
+          setRateChange(rate);
+        });
+
       enqueueSnackbar({
         variant: 'success',
         message: '성공적으로 갱신되었습니다.',
-        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
       });
     } catch (error) {
       enqueueSnackbar({

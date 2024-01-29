@@ -1,5 +1,5 @@
 import { Button, Input, Stack, Text } from '@chakra-ui/react';
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { DEFAULT_URL } from '../../constant';
 import { useRecoilState } from 'recoil';
 import { userInfoState } from '../../atoms/info';

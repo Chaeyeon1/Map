@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Stack, Text } from '@chakra-ui/react';
 import { DEFAULT_URL } from '../constant';
 import Typography from './Typography';
+import { useRecoilState } from 'recoil';
+import { rankingState } from '../atoms/info';
 
 const Ranking = () => {
-  const [ranking, setRanking] = useState<number[]>([]);
+  const [ranking, setRanking] = useRecoilState(rankingState);
 
   useEffect(() => {
     getRanking();

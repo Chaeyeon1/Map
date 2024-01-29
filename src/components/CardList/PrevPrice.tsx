@@ -1,5 +1,5 @@
 import { Stack, Text } from '@chakra-ui/react';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { CardContext } from '../CardList';
 
 const PrevPrice = () => {

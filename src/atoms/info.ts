@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
-import { HoldingData, UserData } from '../type';
+import { CoinDatas, HoldingData, UserData } from '../type';
 
 const { persistAtom } = recoilPersist();
 
@@ -14,4 +14,14 @@ export const holdingsState = atom<HoldingData>({
   key: 'holdingData',
   default: [],
   effects_UNSTABLE: [persistAtom],
+});
+
+export const rankingState = atom<number[]>({
+  key: 'rankingData',
+  default: [],
+});
+
+export const coinState = atom<CoinDatas>({
+  key: 'coinData',
+  default: [],
 });

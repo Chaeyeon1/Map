@@ -1,8 +1,10 @@
 import { Wrap } from '@chakra-ui/react';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect } from 'react';
 import { DEFAULT_URL } from '../constant';
-import { CoinContextType, CoinDatas } from '../type';
+import { CoinContextType } from '../type';
 import Coins from './CardList/Coins';
+import { useRecoilState } from 'recoil';
+import { coinState } from '../atoms/info';
 
 export const CardContext = createContext<CoinContextType>({
   coin: { id: 0, coinName: '', prevPrice: 0, currentPrice: 0, nextRate: 0 },
@@ -10,7 +12,8 @@ export const CardContext = createContext<CoinContextType>({
 });
 
 const CardList = () => {
-  const [coins, setCoins] = useState<CoinDatas>([]);
+  const [coins, setCoins] = useRecoilState(coinState);
+
   const getCoins = () => {
     fetch(`${DEFAULT_URL}/api/Coin/coin`, {
       method: 'GET',

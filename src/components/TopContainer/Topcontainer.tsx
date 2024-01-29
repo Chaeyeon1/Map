@@ -6,11 +6,38 @@ import { useRecoilState } from 'recoil';
 import { getMyHoldings } from '../../api/getMyHoldings';
 import MyProfile from './MyProfile';
 import Ranking from '../Ranking';
+import { DEFAULT_URL } from '../../constant';
 
 const Topcontainer = () => {
   const [, setMyHoldings] = useRecoilState(holdingsState);
-  const [userInfo] = useRecoilState(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [isDesktop] = useMediaQuery('(min-width: 689px)');
+
+  const login = () => {
+    const body = {
+      userId: userInfo?.name,
+      password: userInfo?.phonenum,
+    };
+
+    fetch(`${DEFAULT_URL}/api/Coin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+      .then((response) => response.json())
+      .then((data: any) => {
+        localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
+        setUserInfo(
+          localStorage?.getItem('WAM_Localstorage')
+            ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
+            : null
+        );
+      });
+  };
+
+  useEffect(() => {
+    login();
+  }, []);
 
   useEffect(() => {
     getMyHoldings(userInfo)
