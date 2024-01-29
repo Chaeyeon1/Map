@@ -7,3 +7,10 @@ export const getMyHoldings = (userInfo: UserData) => {
     headers: { 'Content-Type': 'application/json' },
   });
 };
+
+export const getTime = (userInfo: UserData) => {
+  return fetch(`${DEFAULT_URL}/api/Coin/time?id=${userInfo?.id}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  });
+};

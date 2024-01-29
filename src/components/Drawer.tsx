@@ -11,6 +11,7 @@ import {
 import { useRef } from 'react';
 import ChangeRate from './Admin/ChangeRate';
 import ChangeTime from './Admin/ChangeTime';
+import AdminRanking from './Admin/AdminRanking';
 
 export const Drawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,6 +36,7 @@ export const Drawer = () => {
           <DrawerBody>
             <ChangeRate />
             <ChangeTime />
+            <AdminRanking />
           </DrawerBody>
         </DrawerContent>
       </ChakraDrawer>

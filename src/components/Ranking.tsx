@@ -40,10 +40,10 @@ const Ranking = () => {
       >
         현재 순위
       </Text>
-      <Typography text={`🥇 ${ranking[0]}bit`} />
-      <Typography text={`🥈 ${ranking[1]}bit`} />
-      <Typography text={`🥉 ${ranking[2]}bit`} />
-      <Typography text={`💣 ${ranking[3]}bit`} />
+      <Typography text={`🥇 ${ranking[0] ?? 0}bit`} />
+      <Typography text={`🥈 ${ranking[1] ?? 0}bit`} />
+      <Typography text={`🥉 ${ranking[2] ?? 0}bit`} />
+      <Typography text={`💣 ${ranking[3] ?? 0}bit`} />
     </Stack>
   );
 };

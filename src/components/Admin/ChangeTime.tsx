@@ -1,25 +1,45 @@
 import { Button, Input, Stack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { DEFAULT_URL } from '../../constant';
 import { useRecoilState } from 'recoil';
 import { userInfoState } from '../../atoms/info';
 import TimeList from './TimeList';
+import { getTime } from '../../api/getMyHoldings';
+import { DEFAULT_URL } from '../../constant';
 
+export type TimeType = { id: number; timeId: number; timeElement: string };
 const ChangeTime = () => {
-  const [times, setTimes] = useState<string[]>([]);
+  const [times, setTimes] = useState<TimeType[]>([]);
   const [timeChange, setTimeChange] = useState('');
   const [userInfo] = useRecoilState(userInfoState);
 
   useEffect(() => {
-    fetch(`${DEFAULT_URL}/api/Coin/time?id=${userInfo?.id}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
+    getTime(userInfo)
       .then((response) => response.json())
       .then((timesData) => {
         setTimes(timesData);
       });
   }, []);
+
+  const addTime = async () => {
+    try {
+      await fetch(
+        `${DEFAULT_URL}/api/Coin/time?id=${userInfo?.id}&timeElement=2023-02-03T${timeChange}:00`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      setTimeChange('');
+      getTime(userInfo)
+        .then((response) => response.json())
+        .then((timesData) => {
+          setTimes(timesData);
+        });
+    } catch {
+      alert('에러입니다.');
+    }
+  };
 
   return (
     <Stack mt={8}>
@@ -34,7 +54,7 @@ const ChangeTime = () => {
           size='sm'
           type='time'
         />
-        <Button size='sm' colorScheme='facebook'>
+        <Button onClick={addTime} size='sm' colorScheme='facebook'>
           추가
         </Button>
       </Stack>
@@ -42,7 +62,14 @@ const ChangeTime = () => {
         현재 저장되어 있는 시간
       </Text>
       {times.map((time, i) => {
-        return <TimeList key={i} time={time} i={i} />;
+        return (
+          <TimeList
+            setTimes={setTimes}
+            key={i}
+            time={time.timeElement}
+            i={time.timeId}
+          />
+        );
       })}
     </Stack>
   );
