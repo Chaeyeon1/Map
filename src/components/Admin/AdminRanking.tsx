@@ -1,9 +1,21 @@
-import { Stack, Text } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { DEFAULT_URL } from '../../constant';
+import { Image, Stack, Text } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { COIN_URL, DEFAULT_URL } from '../../constant';
+import RankingText from './RankingText';
 
 const AdminRanking = () => {
-  const [rankings, setRankings] = useState<string[]>([]);
+  const [rankings, setRankings] = useState<
+    {
+      id: number;
+      balance: number;
+      name: string;
+      type: string;
+      crew: string;
+      phonenum: string;
+      club: string;
+      total: number;
+    }[]
+  >([]);
 
   useEffect(() => {
     fetch(`${DEFAULT_URL}/api/Coin/ranking/all`, {
@@ -22,9 +34,33 @@ const AdminRanking = () => {
         랭킹
       </Text>
       <Stack direction='row' alignItems='center'>
-        <Stack flex={1} direction='row' spacing={4} alignItems='center'>
+        <Stack justifyContent='center' spacing={4}>
+          <Stack gap={4} ml={'51px'} direction='row'>
+            <RankingText>{'이름'}</RankingText>
+            <RankingText>{'학교'}</RankingText>
+            <RankingText>{'동아리'}</RankingText>
+            <RankingText>{'현금'}</RankingText>
+            <RankingText>{'평단가'}</RankingText>
+          </Stack>
           {rankings.map((ranking, i) => {
-            return <Text key={i}>{ranking}</Text>;
+            return (
+              <Stack gap={4} direction='row' alignItems='center' flex={1}>
+                <Stack width='35px' direction='row'>
+                  <Text>{i + 1}.</Text>
+                  <Image
+                    borderRadius='full'
+                    boxSize='20px'
+                    src={COIN_URL[i]}
+                    alt='My Image'
+                  />
+                </Stack>
+                <RankingText>{ranking.name}</RankingText>
+                <RankingText>{ranking.crew}</RankingText>
+                <RankingText>{ranking.club}</RankingText>
+                <RankingText>{ranking.balance}</RankingText>
+                <RankingText>{ranking.total}</RankingText>
+              </Stack>
+            );
           })}
         </Stack>
       </Stack>
