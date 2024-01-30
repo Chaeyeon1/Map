@@ -13,26 +13,30 @@ const Topcontainer = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [isDesktop] = useMediaQuery('(min-width: 689px)');
 
-  const login = () => {
+  const login = async () => {
     const body = {
       userId: userInfo?.name,
       password: userInfo?.phonenum,
     };
 
-    fetch(`${DEFAULT_URL}/api/Coin/login`, {
+    const response = await fetch(`${DEFAULT_URL}/api/Coin/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-    })
-      .then((response) => response.json())
-      .then((data: any) => {
-        localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
-        setUserInfo(
-          localStorage?.getItem('WAM_Localstorage')
-            ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
-            : null
-        );
-      });
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      localStorage.removeItem('WAM_Localstorage');
+    } else {
+      localStorage.setItem('WAM_Localstorage', JSON.stringify(result));
+      setUserInfo(
+        localStorage?.getItem('WAM_Localstorage')
+          ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
+          : null
+      );
+    }
   };
 
   useEffect(() => {

@@ -73,8 +73,6 @@ const CoinChange = () => {
     setCount(0);
   };
 
-  console.log(userInfo?.balance);
-
   const coinSell = async () => {
     // 매도 : 현재 가진 것 >= 방금 입력한 개수  => 이래야 된다
     const body = {
