@@ -124,8 +124,12 @@ const CoinRateList = ({ index }: { index: number }) => {
             <Button
               size='sm'
               onClick={() => {
-                setIsModified(false);
-                setCoinRate(rateChange);
+                if (rateChange > 100) {
+                  alert('100 이하의 숫자를 넣어주세요.');
+                } else {
+                  setCoinRate(rateChange);
+                  setIsModified(false);
+                }
               }}
               variant='outline'
               colorScheme='facebook'

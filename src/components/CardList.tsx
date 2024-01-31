@@ -28,6 +28,12 @@ const CardList = () => {
 
   useEffect(() => {
     getCoins();
+
+    const intervalId = setInterval(() => {
+      getCoins();
+    }, 30000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (

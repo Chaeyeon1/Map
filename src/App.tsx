@@ -8,7 +8,7 @@ import { SnackbarProvider } from 'notistack';
 
 const App = () => {
   return (
-    <SnackbarProvider>
+    <SnackbarProvider classes={{ containerRoot: 'z-alert' }}>
       <RecoilRoot>
         <ChakraProvider>
           <Stack

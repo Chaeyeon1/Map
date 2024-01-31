@@ -29,7 +29,7 @@ const AdminRanking = () => {
   }, []);
 
   return (
-    <Stack mt={8}>
+    <Stack mb={8} mt={8}>
       <Text fontSize='18px' fontWeight='bold'>
         랭킹
       </Text>

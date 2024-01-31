@@ -94,8 +94,12 @@ const CoinChange = () => {
 
         updateInformation();
         setIsLoading(false);
+        enqueueSnackbar({
+          message: '성공적으로 판매 완료되었습니다.',
+          variant: 'success',
+        });
       } catch {
-        alert('에러 발생');
+        enqueueSnackbar({ variant: 'error', message: '에러 발생' });
         setIsLoading(false);
       }
     } else {
@@ -126,8 +130,12 @@ const CoinChange = () => {
 
         updateInformation();
         setIsLoading(false);
+        enqueueSnackbar({
+          message: '성공적으로 구매 완료되었습니다.',
+          variant: 'success',
+        });
       } catch {
-        alert('에러 발생');
+        enqueueSnackbar({ variant: 'error', message: '에러 발생' });
         setIsLoading(false);
       }
     } else {

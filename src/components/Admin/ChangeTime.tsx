@@ -40,6 +40,10 @@ const ChangeTime = () => {
           setTimes(timesData);
         });
       setIsLoading(false);
+      enqueueSnackbar({
+        message: '성공적으로 업데이트 되었습니다.',
+        variant: 'success',
+      });
     } catch {
       enqueueSnackbar({ message: 'error입니다.', variant: 'error' });
       setIsLoading(false);

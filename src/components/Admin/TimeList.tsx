@@ -1,10 +1,11 @@
-import { Button, Stack, Text } from '@chakra-ui/react';
+import { Button, Spinner, Stack, Text } from '@chakra-ui/react';
 import { DEFAULT_URL } from '../../constant';
 import { useRecoilState } from 'recoil';
 import { userInfoState } from '../../atoms/info';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { TimeType } from './ChangeTime';
 import { getTime } from '../../api/getMyHoldings';
+import { enqueueSnackbar } from 'notistack';
 
 const TimeList = ({
   time,
@@ -16,8 +17,10 @@ const TimeList = ({
   setTimes: Dispatch<SetStateAction<TimeType[]>>;
 }) => {
   const [userInfo] = useRecoilState(userInfoState);
+  const [loading, setLoading] = useState(false);
 
   const onDelete = async () => {
+    setLoading(true);
     try {
       await fetch(
         `${DEFAULT_URL}/api/Coin/time?id=${userInfo?.id}&timeId=${i}`,
@@ -32,8 +35,18 @@ const TimeList = ({
         .then((timesData) => {
           setTimes(timesData);
         });
+      setLoading(false);
+
+      enqueueSnackbar({
+        variant: 'success',
+        message: '성공적으로 삭제가 완료되었습니다.',
+      });
     } catch {
-      alert('에러입니다.');
+      enqueueSnackbar({
+        variant: 'error',
+        message: '삭제가 정상적으로 되지 않았습니다.',
+      });
+      setLoading(false);
     }
   };
 
@@ -43,9 +56,18 @@ const TimeList = ({
         <Text fontWeight='bold'>-</Text>
         <Text>{time.slice(11, 16)}</Text>
       </Stack>
-      <Button onClick={onDelete} size='sm' variant='outline' colorScheme='red'>
-        삭제
-      </Button>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Button
+          onClick={onDelete}
+          size='sm'
+          variant='outline'
+          colorScheme='red'
+        >
+          삭제
+        </Button>
+      )}
     </Stack>
   );
 };

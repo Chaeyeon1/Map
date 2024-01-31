@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from 'react';
 import { DEFAULT_URL } from '../../constant';
 import { useRecoilState } from 'recoil';
 import { userInfoState } from '../../atoms/info';
+import { enqueueSnackbar } from 'notistack';
 
 const TextInput = () => {
   const [userId, setUserId] = useState('');
@@ -26,23 +27,35 @@ const TextInput = () => {
 
     setLoading(true);
 
-    fetch(`${DEFAULT_URL}/api/Coin/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    })
-      .then((response) => response.json())
-      .then((data: any) => {
-        localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
-        setUserInfo(
-          localStorage?.getItem('WAM_Localstorage')
-            ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
-            : null
-        );
-        setUserId('');
-        setPassword('');
-        setLoading(false);
+    try {
+      fetch(`${DEFAULT_URL}/api/Coin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+        .then((response) => response.json())
+        .then((data: any) => {
+          localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
+          setUserInfo(
+            localStorage?.getItem('WAM_Localstorage')
+              ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
+              : null
+          );
+          setUserId('');
+          setPassword('');
+          setLoading(false);
+        });
+
+      enqueueSnackbar({
+        message: '성공적으로 로그인 되었습니다.',
+        variant: 'success',
       });
+    } catch {
+      enqueueSnackbar({
+        message: '로그인에 실패했습니다.',
+        variant: 'error',
+      });
+    }
   };
 
   return (

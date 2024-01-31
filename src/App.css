@@ -1,7 +1,9 @@
 .App {
   text-align: center;
 }
-
+.notistack-SnackbarContainer.z-alert {
+  z-index: 10000;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
