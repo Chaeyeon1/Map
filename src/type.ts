@@ -12,7 +12,7 @@ export type HoldingData =
   | {
       wap: number;
       app: number;
-      mut: number;
+      mus: number;
       pknu: number;
       pus: number;
       pufs: number;
@@ -29,7 +29,7 @@ export type CoinData = {
 
 export type CoinDatas = CoinData[];
 
-export type CoinList = 'wap' | 'app' | 'mut' | 'pknu' | 'pus' | 'pufs';
+export type CoinList = 'wap' | 'app' | 'mus' | 'pknu' | 'pus' | 'pufs';
 export type CoinContextType = {
   coin: CoinData;
   index: number;
