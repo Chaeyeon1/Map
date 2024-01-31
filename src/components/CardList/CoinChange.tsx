@@ -1,4 +1,4 @@
-import { Button, Input, Stack } from '@chakra-ui/react';
+import { Button, Input, Spinner, Stack } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
 import { DEFAULT_URL } from '../../constant';
 import { useRecoilState } from 'recoil';
@@ -21,6 +21,7 @@ const CoinChange = () => {
   const [, setCoins] = useRecoilState(coinState);
   const [, setRanking] = useRecoilState(rankingState);
   const { coin } = useContext(CardContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const login = () => {
     const body = {
@@ -74,7 +75,6 @@ const CoinChange = () => {
   };
 
   const coinSell = async () => {
-    // 매도 : 현재 가진 것 >= 방금 입력한 개수  => 이래야 된다
     const body = {
       id: userInfo?.id,
       coinId: index,
@@ -82,8 +82,8 @@ const CoinChange = () => {
     };
     const currentHoldings =
       myHoldings?.[0][coin.coinName.toLowerCase() as CoinList];
+    setIsLoading(true);
 
-    console.log(currentHoldings);
     if ((currentHoldings ?? 0) >= count) {
       try {
         await fetch(`${DEFAULT_URL}/api/Coin/coin/sell`, {
@@ -93,8 +93,10 @@ const CoinChange = () => {
         });
 
         updateInformation();
+        setIsLoading(false);
       } catch {
         alert('에러 발생');
+        setIsLoading(false);
       }
     } else {
       enqueueSnackbar({
@@ -102,16 +104,17 @@ const CoinChange = () => {
         message: '현재 가진 개수만큼만 팔 수 있습니다.',
       });
       setCount(0);
+      setIsLoading(false);
     }
   };
 
   const coinBuy = async () => {
-    // 매수 : 현재 가격 * 내가 사고자 하는 개수 < 총 잔고 => 이래야 된다
     const body = {
       id: userInfo?.id,
       coinId: index,
       count,
     };
+    setIsLoading(true);
 
     if (coin.currentPrice * count < (userInfo?.balance ?? 0)) {
       try {
@@ -122,14 +125,18 @@ const CoinChange = () => {
         });
 
         updateInformation();
+        setIsLoading(false);
       } catch {
         alert('에러 발생');
+        setIsLoading(false);
       }
     } else {
       enqueueSnackbar({ variant: 'error', message: '잔액이 부족합니다.' });
       setCount(0);
+      setIsLoading(false);
     }
   };
+
   return (
     <Stack direction='row' justify='flex-start' align='center'>
       <Input
@@ -139,12 +146,28 @@ const CoinChange = () => {
         value={count === 0 ? '' : count}
         onChange={(e) => setCount(Number(e.target.value))}
       />
-      <Button size='xs' variant='outline' colorScheme='green' onClick={coinBuy}>
-        매수
-      </Button>
-      <Button size='xs' variant='outline' colorScheme='red' onClick={coinSell}>
-        매도
-      </Button>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Button
+            size='xs'
+            variant='outline'
+            colorScheme='green'
+            onClick={coinBuy}
+          >
+            매수
+          </Button>
+          <Button
+            size='xs'
+            variant='outline'
+            colorScheme='red'
+            onClick={coinSell}
+          >
+            매도
+          </Button>
+        </>
+      )}
     </Stack>
   );
 };

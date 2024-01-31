@@ -3,6 +3,7 @@ import {
   IconButton,
   Image,
   Input,
+  Spinner,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -18,6 +19,7 @@ const CoinRateList = ({ index }: { index: number }) => {
   const [userInfo] = useRecoilState(userInfoState);
   const [rateChange, setRateChange] = useState(coinRate ?? 0);
   const [isModified, setIsModified] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getRate = () => {
     fetch(`${DEFAULT_URL}/api/Coin/rate?id=${userInfo?.id}&coin=${index + 1}`, {
@@ -32,6 +34,7 @@ const CoinRateList = ({ index }: { index: number }) => {
   };
 
   const updateCoinRate = async () => {
+    setIsLoading(true);
     const body = {
       id: userInfo?.id,
       coin: index + 1,
@@ -62,11 +65,15 @@ const CoinRateList = ({ index }: { index: number }) => {
         variant: 'success',
         message: '성공적으로 갱신되었습니다.',
       });
+
+      setIsLoading(false);
     } catch (error) {
       enqueueSnackbar({
         variant: 'error',
         message: '알 수 없는 에러가 발생하였습니다.',
       });
+
+      setIsLoading(false);
     }
   };
 
@@ -143,13 +150,17 @@ const CoinRateList = ({ index }: { index: number }) => {
             >
               수정
             </Button>
-            <Button
-              size='sm'
-              onClick={() => updateCoinRate()}
-              colorScheme='red'
-            >
-              적용
-            </Button>
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <Button
+                size='sm'
+                onClick={() => updateCoinRate()}
+                colorScheme='red'
+              >
+                적용
+              </Button>
+            )}
           </>
         )}
       </Stack>

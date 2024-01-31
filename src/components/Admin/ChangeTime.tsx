@@ -1,16 +1,18 @@
-import { Button, Input, Stack, Text } from '@chakra-ui/react';
+import { Button, Input, Spinner, Stack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { userInfoState } from '../../atoms/info';
 import TimeList from './TimeList';
 import { getTime } from '../../api/getMyHoldings';
 import { DEFAULT_URL } from '../../constant';
+import { enqueueSnackbar } from 'notistack';
 
 export type TimeType = { id: number; timeId: number; timeElement: string };
 const ChangeTime = () => {
   const [times, setTimes] = useState<TimeType[]>([]);
   const [timeChange, setTimeChange] = useState('');
   const [userInfo] = useRecoilState(userInfoState);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getTime(userInfo)
@@ -21,6 +23,7 @@ const ChangeTime = () => {
   }, []);
 
   const addTime = async () => {
+    setIsLoading(true);
     try {
       await fetch(
         `${DEFAULT_URL}/api/Coin/time?id=${userInfo?.id}&timeElement=2023-02-03T${timeChange}:00`,
@@ -36,8 +39,10 @@ const ChangeTime = () => {
         .then((timesData) => {
           setTimes(timesData);
         });
+      setIsLoading(false);
     } catch {
-      alert('에러입니다.');
+      enqueueSnackbar({ message: 'error입니다.', variant: 'error' });
+      setIsLoading(false);
     }
   };
 
@@ -54,9 +59,13 @@ const ChangeTime = () => {
           size='sm'
           type='time'
         />
-        <Button onClick={addTime} size='sm' colorScheme='facebook'>
-          추가
-        </Button>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <Button onClick={addTime} size='sm' colorScheme='facebook'>
+            추가
+          </Button>
+        )}
       </Stack>
       <Text fontSize='14px' colorScheme='facebook' mt={4} fontWeight='bold'>
         현재 저장되어 있는 시간

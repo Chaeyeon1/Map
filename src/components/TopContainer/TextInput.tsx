@@ -1,4 +1,4 @@
-import { Button, Input, Stack, Text } from '@chakra-ui/react';
+import { Button, Input, Spinner, Stack, Text } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
 import { DEFAULT_URL } from '../../constant';
 import { useRecoilState } from 'recoil';
@@ -8,6 +8,7 @@ const TextInput = () => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [, setUserInfo] = useRecoilState(userInfoState);
+  const [loading, setLoading] = useState(false);
 
   const loginIdChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUserId(event.target.value);
@@ -22,6 +23,8 @@ const TextInput = () => {
       userId,
       password,
     };
+
+    setLoading(true);
 
     fetch(`${DEFAULT_URL}/api/Coin/login`, {
       method: 'POST',
@@ -38,6 +41,7 @@ const TextInput = () => {
         );
         setUserId('');
         setPassword('');
+        setLoading(false);
       });
   };
 
@@ -91,9 +95,13 @@ const TextInput = () => {
         </Stack>
       </Stack>
       <Stack justify='flex-start' align='center' background='gray.50'>
-        <Button colorScheme='linkedin' variant='outline' onClick={login}>
-          입력
-        </Button>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <Button colorScheme='linkedin' variant='outline' onClick={login}>
+            입력
+          </Button>
+        )}
       </Stack>
     </Stack>
   );
