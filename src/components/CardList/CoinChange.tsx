@@ -86,18 +86,26 @@ const CoinChange = () => {
 
     if ((currentHoldings ?? 0) >= count) {
       try {
-        await fetch(`${DEFAULT_URL}/api/Coin/coin/sell`, {
+        const response = await fetch(`${DEFAULT_URL}/api/Coin/coin/sell`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
         });
 
-        updateInformation();
-        setIsLoading(false);
-        enqueueSnackbar({
-          message: '성공적으로 판매 완료되었습니다.',
-          variant: 'success',
-        });
+        if (response.ok) {
+          updateInformation();
+          setIsLoading(false);
+          enqueueSnackbar({
+            message: '성공적으로 판매 완료되었습니다.',
+            variant: 'success',
+          });
+        } else {
+          enqueueSnackbar({
+            message: '에러 발생',
+            variant: 'error',
+          });
+          setIsLoading(false);
+        }
       } catch {
         enqueueSnackbar({ variant: 'error', message: '에러 발생' });
         setIsLoading(false);
@@ -122,18 +130,23 @@ const CoinChange = () => {
 
     if (coin.currentPrice * count < (userInfo?.balance ?? 0)) {
       try {
-        await fetch(`${DEFAULT_URL}/api/Coin/coin/buy`, {
+        const response = await fetch(`${DEFAULT_URL}/api/Coin/coin/buy`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
         });
 
-        updateInformation();
-        setIsLoading(false);
-        enqueueSnackbar({
-          message: '성공적으로 구매 완료되었습니다.',
-          variant: 'success',
-        });
+        if (response.ok) {
+          updateInformation();
+          setIsLoading(false);
+          enqueueSnackbar({
+            message: '성공적으로 구매 완료되었습니다.',
+            variant: 'success',
+          });
+        } else {
+          enqueueSnackbar({ variant: 'error', message: '에러 발생' });
+          setIsLoading(false);
+        }
       } catch {
         enqueueSnackbar({ variant: 'error', message: '에러 발생' });
         setIsLoading(false);

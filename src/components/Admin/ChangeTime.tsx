@@ -25,7 +25,7 @@ const ChangeTime = () => {
   const addTime = async () => {
     setIsLoading(true);
     try {
-      await fetch(
+      const response = await fetch(
         `${DEFAULT_URL}/api/Coin/time?id=${userInfo?.id}&timeElement=2024-02-03T${timeChange}:00`,
         {
           method: 'POST',
@@ -33,17 +33,25 @@ const ChangeTime = () => {
         }
       );
 
-      setTimeChange('');
-      getTime(userInfo)
-        .then((response) => response.json())
-        .then((timesData) => {
-          setTimes(timesData);
+      if (response.ok) {
+        setTimeChange('');
+        getTime(userInfo)
+          .then((response) => response.json())
+          .then((timesData) => {
+            setTimes(timesData);
+          });
+        setIsLoading(false);
+        enqueueSnackbar({
+          message: '성공적으로 업데이트 되었습니다.',
+          variant: 'success',
         });
-      setIsLoading(false);
-      enqueueSnackbar({
-        message: '성공적으로 업데이트 되었습니다.',
-        variant: 'success',
-      });
+      } else {
+        enqueueSnackbar({
+          message: '업데이트에 실패했습니다.',
+          variant: 'error',
+        });
+        setIsLoading(false);
+      }
     } catch {
       enqueueSnackbar({ message: 'error입니다.', variant: 'error' });
       setIsLoading(false);

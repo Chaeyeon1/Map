@@ -19,7 +19,7 @@ const TextInput = () => {
     setPassword(event.target.value);
   };
 
-  const login = () => {
+  const login = async () => {
     const body = {
       userId,
       password,
@@ -28,33 +28,42 @@ const TextInput = () => {
     setLoading(true);
 
     try {
-      fetch(`${DEFAULT_URL}/api/Coin/login`, {
+      const response = await fetch(`${DEFAULT_URL}/api/Coin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
-      })
-        .then((response) => response.json())
-        .then((data: any) => {
-          localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
-          setUserInfo(
-            localStorage?.getItem('WAM_Localstorage')
-              ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
-              : null
-          );
-          setUserId('');
-          setPassword('');
-          setLoading(false);
-        });
-
-      enqueueSnackbar({
-        message: '성공적으로 로그인 되었습니다.',
-        variant: 'success',
       });
+
+      const result = await response.json();
+
+      if (response.ok && result.phonenum) {
+        localStorage.setItem('WAM_Localstorage', JSON.stringify(result));
+        setUserInfo(
+          localStorage?.getItem('WAM_Localstorage')
+            ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
+            : null
+        );
+        setUserId('');
+        setPassword('');
+        setLoading(false);
+
+        enqueueSnackbar({
+          message: '성공적으로 로그인 되었습니다.',
+          variant: 'success',
+        });
+      } else {
+        enqueueSnackbar({
+          message: '로그인에 실패했습니다.',
+          variant: 'error',
+        });
+        setLoading(false);
+      }
     } catch {
       enqueueSnackbar({
         message: '로그인에 실패했습니다.',
         variant: 'error',
       });
+      setLoading(false);
     }
   };
 
