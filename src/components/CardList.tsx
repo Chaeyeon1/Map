@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Wrap } from '@chakra-ui/react';
 import { createContext, useEffect } from 'react';
 import { DEFAULT_URL } from '../constant';
