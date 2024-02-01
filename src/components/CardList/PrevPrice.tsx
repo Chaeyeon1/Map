@@ -13,7 +13,10 @@ const PrevPrice = () => {
         fontWeight='semibold'
         fontSize='14px'
       >
-        종전가 : {coin.prevPrice}
+        종전가 :{' '}
+        {coin.prevPrice
+          .toString()
+          .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
       </Text>
     </Stack>
   );

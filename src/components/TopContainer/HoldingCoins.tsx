@@ -9,7 +9,7 @@ const HoldingCoins = () => {
       <HoldingCoin src={'/mus.png'} coinName='mus' />
       <HoldingCoin src={'/pknu.png'} coinName='pknu' />
       <HoldingCoin src={'/pnu.png'} coinName='pus' />
-      <HoldingCoin src={'/bufs.png'} coinName='pufs' />
+      <HoldingCoin src={'/bufs.png'} coinName='bufs' />
     </Wrap>
   );
 };

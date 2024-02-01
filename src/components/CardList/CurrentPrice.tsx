@@ -13,7 +13,9 @@ const CurrentPrice = () => {
       fontSize='24px'
       color='#000000'
     >
-      {coin.currentPrice}
+      {coin.currentPrice
+        .toString()
+        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
     </Text>
   );
 };
