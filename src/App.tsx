@@ -5,26 +5,30 @@ import { Stack } from '@chakra-ui/react';
 import Logo from './components/Logo';
 import CardList from './components/CardList';
 import { SnackbarProvider } from 'notistack';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const App = () => {
+  const queryClient = new QueryClient();
   return (
-    <SnackbarProvider classes={{ containerRoot: 'z-alert' }}>
-      <RecoilRoot>
-        <ChakraProvider>
-          <Stack
-            maxWidth='700px'
-            margin='0 auto'
-            py='40px'
-            justifyContent='center'
-            alignItems='center'
-          >
-            <Logo />
-            <Topcontainer />
-            <CardList />
-          </Stack>
-        </ChakraProvider>
-      </RecoilRoot>
-    </SnackbarProvider>
+    <QueryClientProvider client={queryClient}>
+      <SnackbarProvider classes={{ containerRoot: 'z-alert' }}>
+        <RecoilRoot>
+          <ChakraProvider>
+            <Stack
+              maxWidth='700px'
+              margin='0 auto'
+              py='40px'
+              justifyContent='center'
+              alignItems='center'
+            >
+              <Logo />
+              <Topcontainer />
+              <CardList />
+            </Stack>
+          </ChakraProvider>
+        </RecoilRoot>
+      </SnackbarProvider>
+    </QueryClientProvider>
   );
 };
 
