@@ -57,8 +57,16 @@ const AdminRanking = () => {
                 <RankingText>{ranking.name}</RankingText>
                 <RankingText>{ranking.crew}</RankingText>
                 <RankingText>{ranking.club}</RankingText>
-                <RankingText>{ranking.balance}</RankingText>
-                <RankingText>{ranking.total}</RankingText>
+                <RankingText>
+                  {ranking.balance
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
+                </RankingText>
+                <RankingText>
+                  {ranking.total
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
+                </RankingText>
               </Stack>
             );
           })}

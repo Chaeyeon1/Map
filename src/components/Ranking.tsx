@@ -42,10 +42,34 @@ const Ranking = () => {
       >
         현재 순위
       </Text>
-      <Typography text={`🥇 ${ranking[0] ?? 0}bit`} />
-      <Typography text={`🥈 ${ranking[1] ?? 0}bit`} />
-      <Typography text={`🥉 ${ranking[2] ?? 0}bit`} />
-      <Typography text={`💣 ${ranking[3] ?? 0}bit`} />
+      <Typography
+        text={`🥇 ${
+          ranking[0]
+            .toString()
+            .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
+        }bit`}
+      />
+      <Typography
+        text={`🥈 ${
+          ranking[1]
+            .toString()
+            .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
+        }bit`}
+      />
+      <Typography
+        text={`🥉 ${
+          ranking[2]
+            .toString()
+            .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
+        }bit`}
+      />
+      <Typography
+        text={`💣 ${
+          ranking[3]
+            .toString()
+            .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
+        }bit`}
+      />
     </Stack>
   );
 };

@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 const RankingText = ({ children }: { children: ReactNode }) => {
   return (
-    <Text textAlign='center' width='70px'>
+    <Text textAlign='center' width='100px'>
       {children}
     </Text>
   );
