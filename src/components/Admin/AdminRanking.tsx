@@ -59,12 +59,12 @@ const AdminRanking = () => {
                 <RankingText>{ranking.club}</RankingText>
                 <RankingText>
                   {ranking.balance
-                    .toString()
+                    ?.toString()
                     .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
                 </RankingText>
                 <RankingText>
                   {ranking.total
-                    .toString()
+                    ?.toString()
                     .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
                 </RankingText>
               </Stack>

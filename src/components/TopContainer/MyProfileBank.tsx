@@ -1,7 +1,6 @@
 import { Stack, Text } from '@chakra-ui/react';
-import React from 'react';
 import { useRecoilState } from 'recoil';
-import { coinState, userInfoState } from '../../atoms/info';
+import { userInfoState } from '../../atoms/info';
 
 const MyProfileBank = () => {
   const [userInfo] = useRecoilState(userInfoState);
@@ -11,7 +10,7 @@ const MyProfileBank = () => {
       <Text>
         총 잔고 :{' '}
         {userInfo?.balance
-          .toString()
+          ?.toString()
           .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
       </Text>
     </Stack>

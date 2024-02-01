@@ -15,7 +15,7 @@ const PrevPrice = () => {
       >
         종전가 :{' '}
         {coin.prevPrice
-          .toString()
+          ?.toString()
           .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
       </Text>
     </Stack>

@@ -45,28 +45,28 @@ const Ranking = () => {
       <Typography
         text={`🥇 ${
           ranking[0]
-            .toString()
+            ?.toString()
             .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
         }bit`}
       />
       <Typography
         text={`🥈 ${
           ranking[1]
-            .toString()
+            ?.toString()
             .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
         }bit`}
       />
       <Typography
         text={`🥉 ${
           ranking[2]
-            .toString()
+            ?.toString()
             .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
         }bit`}
       />
       <Typography
         text={`💣 ${
           ranking[3]
-            .toString()
+            ?.toString()
             .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
         }bit`}
       />

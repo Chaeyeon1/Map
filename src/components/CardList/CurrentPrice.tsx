@@ -14,7 +14,7 @@ const CurrentPrice = () => {
       color='#000000'
     >
       {coin.currentPrice
-        .toString()
+        ?.toString()
         .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
     </Text>
   );
