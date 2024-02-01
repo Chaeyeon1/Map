@@ -101,7 +101,7 @@ const CoinChange = () => {
           });
         } else {
           enqueueSnackbar({
-            message: '에러 발생',
+            message: '올바른 값을 입력해주세요.',
             variant: 'error',
           });
           setIsLoading(false);
