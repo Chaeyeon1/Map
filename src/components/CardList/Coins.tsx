@@ -4,25 +4,27 @@ import { CardContext } from '../CardList';
 import Card from '../Card';
 import CoinInfo from './CoinInfo';
 import { useRecoilState } from 'recoil';
-import { userInfoState } from '../../atoms/info';
+import { idState } from '../../atoms/info';
 import MyHoldingCoin from './MyHoldingCoin';
 import Price from './Price';
 import CoinChange from './CoinChange';
+import { useGetUserInfoQuery } from '../../api/coin-api';
 
 const Coins = () => {
   const { coin } = useContext(CardContext);
-  const [userInfo] = useRecoilState(userInfoState);
+  const [id] = useRecoilState(idState);
+  const { data } = useGetUserInfoQuery({ params: { id } });
 
   return (
     <WrapItem key={coin.id}>
       <Card>
         <Stack justifyContent='space-between' direction='row'>
           <CoinInfo />
-          {userInfo && <MyHoldingCoin />}
+          {id && <MyHoldingCoin />}
         </Stack>
         {coin?.prevPrice === 0 ? (
           <Stack
-            height={userInfo?.admin ? '59px' : '96px'}
+            height={data?.admin ? '96px' : '59px'}
             display='flex'
             justifyContent='center'
           >
@@ -34,7 +36,7 @@ const Coins = () => {
         ) : (
           <Stack justify='center' align='flex-start' spacing='12px'>
             <Price />
-            {userInfo && !userInfo?.admin && <CoinChange />}
+            {id && !data?.admin && <CoinChange />}
           </Stack>
         )}
       </Card>

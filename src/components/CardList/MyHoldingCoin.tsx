@@ -1,13 +1,20 @@
 import { Text } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
-import { holdingsState } from '../../atoms/info';
-import { CoinList } from '../../type';
-import { useContext } from 'react';
+import { CoinList, HoldingData } from '../../type';
+import { useContext, useEffect, useState } from 'react';
 import { CardContext } from '../CardList';
+import { useGetHoldingQuery } from '../../api/coin-api';
+import { idState } from '../../atoms/info';
 
 const MyHoldingCoin = () => {
-  const [myHoldings] = useRecoilState(holdingsState);
   const { coin } = useContext(CardContext);
+  const [id] = useRecoilState(idState);
+  const { data } = useGetHoldingQuery({ params: { id: id } });
+  const [myHoldings, setMyHoldings] = useState<HoldingData>([]);
+
+  useEffect(() => {
+    setMyHoldings(data ?? []);
+  }, [data]);
 
   let currentCoin: CoinList = 'wap';
 

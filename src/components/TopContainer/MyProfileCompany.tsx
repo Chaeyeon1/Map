@@ -1,12 +1,14 @@
 import { Stack, Text, useMediaQuery } from '@chakra-ui/react';
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { userInfoState } from '../../atoms/info';
+import { idState } from '../../atoms/info';
 import MyProfileImage from './MyProfileImage';
+import { useGetUserInfoQuery } from '../../api/coin-api';
 
 const MyProfileCompany = () => {
-  const [userInfo] = useRecoilState(userInfoState);
+  const [id] = useRecoilState(idState);
   const [isDesktop] = useMediaQuery('(min-width: 650px)');
+  const { data } = useGetUserInfoQuery({ params: { id } });
 
   return (
     <Stack
@@ -18,13 +20,13 @@ const MyProfileCompany = () => {
     >
       {isDesktop && <MyProfileImage />}
       <Text color='gray' fontWeight='bold'>
-        {userInfo?.crew}
+        {data?.crew}
       </Text>
       <Text color='gray' fontWeight='bold'>
         {'-'}
       </Text>
       <Text color='black' fontWeight='bold'>
-        {userInfo?.type}
+        {data?.type}
       </Text>
     </Stack>
   );

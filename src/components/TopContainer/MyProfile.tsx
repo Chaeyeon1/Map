@@ -1,17 +1,16 @@
-import { Button, Spinner, Stack, Text, useMediaQuery } from '@chakra-ui/react';
+import { Button, Stack, Text, useMediaQuery } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
-import { holdingsState, userInfoState } from '../../atoms/info';
+import { idState } from '../../atoms/info';
 import MyProfileCompany from './MyProfileCompany';
 import MyProfileBank from './MyProfileBank';
 import HoldingCoins from './HoldingCoins';
 import { Drawer } from '../Drawer';
-import { useState } from 'react';
+import { useGetUserInfoQuery } from '../../api/coin-api';
 
 const MyProfile = () => {
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const [, setMyHoldings] = useRecoilState(holdingsState);
+  const [id, setId] = useRecoilState(idState);
   const [isDesktop] = useMediaQuery('(min-width: 350px)');
-  const [isLoading, setIsLoading] = useState(false);
+  const { data } = useGetUserInfoQuery({ params: { id } });
 
   return (
     <>
@@ -35,28 +34,21 @@ const MyProfile = () => {
               fontSize='40px'
               color='teal.900'
             >
-              {userInfo?.name}
+              {data?.name}
             </Text>
             <Stack spacing={2} direction='row'>
-              {userInfo?.admin && <Drawer />}
-              {isLoading ? (
-                <Spinner />
-              ) : (
-                <Button
-                  size='sm'
-                  colorScheme='linkedin'
-                  variant='outline'
-                  onClick={() => {
-                    setIsLoading(true);
-                    setUserInfo(null);
-                    localStorage.removeItem('WAM_Localstorage');
-                    setMyHoldings([]);
-                    setIsLoading(false);
-                  }}
-                >
-                  로그아웃
-                </Button>
-              )}
+              {data?.admin && <Drawer />}
+              <Button
+                size='sm'
+                colorScheme='linkedin'
+                variant='outline'
+                onClick={() => {
+                  setId(undefined);
+                  localStorage.removeItem('WAM_Localstorage');
+                }}
+              >
+                로그아웃
+              </Button>
             </Stack>
           </Stack>
           <MyProfileBank />

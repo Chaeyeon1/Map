@@ -1,27 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Stack, Text } from '@chakra-ui/react';
-import { DEFAULT_URL } from '../constant';
 import Typography from './Typography';
-import { useRecoilState } from 'recoil';
-import { rankingState } from '../atoms/info';
+import { useGetRankingQuery } from '../api/coin-api';
 
 const Ranking = () => {
-  const [ranking, setRanking] = useRecoilState(rankingState);
+  const [ranking, setRanking] = useState<number[]>();
+  const { data } = useGetRankingQuery();
 
   useEffect(() => {
-    getRanking();
-  }, []);
-
-  const getRanking = () => {
-    fetch(`${DEFAULT_URL}/api/Coin/ranking`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setRanking(data);
-      });
-  };
+    setRanking(data ?? []);
+  }, [data]);
 
   return (
     <Stack
@@ -44,28 +32,28 @@ const Ranking = () => {
       </Text>
       <Typography
         text={`🥇 ${
-          ranking[0]
+          ranking?.[0]
             ?.toString()
             .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
         }bit`}
       />
       <Typography
         text={`🥈 ${
-          ranking[1]
+          ranking?.[1]
             ?.toString()
             .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
         }bit`}
       />
       <Typography
         text={`🥉 ${
-          ranking[2]
+          ranking?.[2]
             ?.toString()
             .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
         }bit`}
       />
       <Typography
         text={`💣 ${
-          ranking[3]
+          ranking?.[3]
             ?.toString()
             .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') ?? 0
         }bit`}

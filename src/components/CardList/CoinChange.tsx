@@ -1,160 +1,98 @@
 import { Button, Input, Spinner, Stack } from '@chakra-ui/react';
-import { useContext, useState } from 'react';
-import { DEFAULT_URL } from '../../constant';
+import { useContext, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import {
-  coinState,
-  holdingsState,
-  rankingState,
-  userInfoState,
-} from '../../atoms/info';
+import { idState } from '../../atoms/info';
 import { CardContext } from '../CardList';
-import { getMyHoldings } from '../../api/getMyHoldings';
 import { enqueueSnackbar } from 'notistack';
-import { CoinList } from '../../type';
+import { CoinList, HoldingData } from '../../type';
+import {
+  useBuy,
+  useGetHoldingQuery,
+  useGetUserInfoQuery,
+  useSell,
+} from '../../api/coin-api';
 
 const CoinChange = () => {
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [id] = useRecoilState(idState);
   const [count, setCount] = useState<number>(0);
   const { index } = useContext(CardContext);
-  const [myHoldings, setMyHoldings] = useRecoilState(holdingsState);
-  const [, setCoins] = useRecoilState(coinState);
-  const [, setRanking] = useRecoilState(rankingState);
   const { coin } = useContext(CardContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutateAsync, isLoading } = useSell();
+  const { mutateAsync: buyMutateAsync, isLoading: buyIsLoading } = useBuy();
+  const { data } = useGetHoldingQuery({ params: { id: id } });
+  const [myHoldings, setMyHoldings] = useState<HoldingData>([]);
+  const { data: userData } = useGetUserInfoQuery({ params: { id } });
 
-  const login = () => {
-    const body = {
-      userId: userInfo?.name,
-      password: userInfo?.phonenum,
-    };
-
-    fetch(`${DEFAULT_URL}/api/Coin/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    })
-      .then((response) => response.json())
-      .then((data: any) => {
-        localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
-        setUserInfo(
-          localStorage?.getItem('WAM_Localstorage')
-            ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
-            : null
-        );
-      });
-  };
-
-  const updateInformation = () => {
-    getMyHoldings(userInfo)
-      .then((response) => response.json())
-      .then((data) => {
-        setMyHoldings(data);
-      });
-
-    fetch(`${DEFAULT_URL}/api/Coin/coin`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => response.json())
-      .then((coinData) => {
-        setCoins(coinData);
-      });
-
-    fetch(`${DEFAULT_URL}/api/Coin/ranking`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setRanking(data);
-      });
-
-    login();
-    setCount(0);
-  };
+  useEffect(() => {
+    setMyHoldings(data ?? []);
+  }, [data]);
 
   const coinSell = async () => {
     const body = {
-      id: userInfo?.id,
+      id: id,
       coinId: index,
       count,
     };
     const currentHoldings =
       myHoldings?.[0][coin.coinName.toLowerCase() as CoinList];
-    setIsLoading(true);
 
-    if ((currentHoldings ?? 0) >= count) {
-      try {
-        const response = await fetch(`${DEFAULT_URL}/api/Coin/coin/sell`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        });
-
-        if (response.ok) {
-          updateInformation();
-          setIsLoading(false);
-          enqueueSnackbar({
-            message: '성공적으로 판매 완료되었습니다.',
-            variant: 'success',
-          });
+    try {
+      if ((currentHoldings ?? 0) >= count) {
+        if (count > 0) {
+          mutateAsync(body);
+          setCount(0);
         } else {
           enqueueSnackbar({
-            message: '올바른 값을 입력해주세요.',
             variant: 'error',
+            message: '음수는 입력하실 수 없습니다.',
           });
-          setIsLoading(false);
+          setCount(0);
         }
-      } catch {
-        enqueueSnackbar({ variant: 'error', message: '에러 발생' });
-        setIsLoading(false);
+      } else {
+        enqueueSnackbar({
+          variant: 'error',
+          message: '현재 가진 개수만큼만 팔 수 있습니다.',
+        });
+        setCount(0);
       }
-    } else {
+    } catch {
       enqueueSnackbar({
         variant: 'error',
-        message: '현재 가진 개수만큼만 팔 수 있습니다.',
+        message: '올바른 값을 입력해주세요.',
       });
       setCount(0);
-      setIsLoading(false);
     }
   };
 
   const coinBuy = async () => {
     const body = {
-      id: userInfo?.id,
+      id,
       coinId: index,
-      count,
+      count: Math.floor(count),
     };
-    setIsLoading(true);
 
-    if (coin.currentPrice * count < (userInfo?.balance ?? 0)) {
-      try {
-        const response = await fetch(`${DEFAULT_URL}/api/Coin/coin/buy`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        });
-
-        if (response.ok) {
-          updateInformation();
-          setIsLoading(false);
-          enqueueSnackbar({
-            message: '성공적으로 구매 완료되었습니다.',
-            variant: 'success',
-          });
+    try {
+      if (coin.currentPrice * count < (userData?.balance ?? 0)) {
+        if (count > 0) {
+          buyMutateAsync(body);
+          setCount(0);
         } else {
-          enqueueSnackbar({ variant: 'error', message: '에러 발생' });
-          setIsLoading(false);
+          enqueueSnackbar({
+            variant: 'error',
+            message: '음수는 입력하실 수 없습니다.',
+          });
+          setCount(0);
         }
-      } catch {
-        enqueueSnackbar({ variant: 'error', message: '에러 발생' });
-        setIsLoading(false);
+      } else {
+        enqueueSnackbar({ variant: 'error', message: '잔액이 부족합니다.' });
+        setCount(0);
       }
-    } else {
-      enqueueSnackbar({ variant: 'error', message: '잔액이 부족합니다.' });
+    } catch {
+      enqueueSnackbar({
+        variant: 'error',
+        message: '올바른 값을 입력해주세요.',
+      });
       setCount(0);
-      setIsLoading(false);
     }
   };
 
@@ -167,7 +105,7 @@ const CoinChange = () => {
         value={count === 0 ? '' : count}
         onChange={(e) => setCount(Number(e.target.value))}
       />
-      {isLoading ? (
+      {isLoading || buyIsLoading ? (
         <Spinner />
       ) : (
         <>

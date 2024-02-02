@@ -8,78 +8,36 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { COIN, COIN_URL, DEFAULT_URL } from '../../constant';
+import { COIN, COIN_URL } from '../../constant';
 import { useRecoilState } from 'recoil';
-import { userInfoState } from '../../atoms/info';
+import { idState } from '../../atoms/info';
 import { RepeatIcon } from '@chakra-ui/icons';
-import { enqueueSnackbar } from 'notistack';
+import { useGetRateQuery, useUpdateRate } from '../../api/coin-api';
 
 const CoinRateList = ({ index }: { index: number }) => {
   const [coinRate, setCoinRate] = useState(0);
-  const [userInfo] = useRecoilState(userInfoState);
+  const [id] = useRecoilState(idState);
   const [rateChange, setRateChange] = useState(coinRate ?? 0);
   const [isModified, setIsModified] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, refetch } = useGetRateQuery({
+    params: { id, index: index + 1 },
+  });
+  const { mutateAsync, isLoading } = useUpdateRate();
 
-  const getRate = () => {
-    fetch(`${DEFAULT_URL}/api/Coin/rate?id=${userInfo?.id}&coin=${index + 1}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => response.json())
-      .then((rate) => {
-        setCoinRate(rate);
-        setRateChange(rate);
-      });
-  };
+  useEffect(() => {
+    setCoinRate(data ?? 0);
+    setRateChange(data ?? 0);
+  }, [data]);
 
   const updateCoinRate = async () => {
-    setIsLoading(true);
     const body = {
-      id: userInfo?.id,
+      id,
       coin: index + 1,
       rate: Number(coinRate),
     };
 
-    try {
-      await fetch(`${DEFAULT_URL}/api/Coin/rate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      fetch(
-        `${DEFAULT_URL}/api/Coin/rate?id=${userInfo?.id}&coin=${index + 1}`,
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
-        .then((response) => response.json())
-        .then((rate) => {
-          setCoinRate(rate);
-          setRateChange(rate);
-        });
-
-      enqueueSnackbar({
-        variant: 'success',
-        message: '성공적으로 갱신되었습니다.',
-      });
-
-      setIsLoading(false);
-    } catch (error) {
-      enqueueSnackbar({
-        variant: 'error',
-        message: '알 수 없는 에러가 발생하였습니다.',
-      });
-
-      setIsLoading(false);
-    }
+    mutateAsync(body);
   };
-
-  useEffect(() => {
-    getRate();
-  }, []);
 
   return (
     <Stack
@@ -145,7 +103,7 @@ const CoinRateList = ({ index }: { index: number }) => {
               aria-label='Search database'
               variant='outline'
               icon={<RepeatIcon />}
-              onClick={getRate}
+              onClick={() => refetch()}
             />
             <Button
               size='sm'

@@ -1,21 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Wrap } from '@chakra-ui/react';
-import { createContext, useEffect } from 'react';
-import { CoinContextType } from '../type';
+import { createContext, useEffect, useState } from 'react';
+import { CoinContextType, CoinDatas } from '../type';
 import Coins from './CardList/Coins';
 import { useRecoilState } from 'recoil';
-import {
-  coinState,
-  holdingsState,
-  timeState,
-  userInfoState,
-} from '../atoms/info';
+import { idState } from '../atoms/info';
 import {
   useGetCoinQuery,
   useGetHoldingQuery,
+  useGetRankingQuery,
   useGetTimeQuery,
+  useGetUserInfoQuery,
 } from '../api/coin-api';
-import { DEFAULT_URL } from '../constant';
+import { TimeType } from './Admin/ChangeTime';
 
 export const CardContext = createContext<CoinContextType>({
   coin: { id: 0, coinName: '', prevPrice: 0, currentPrice: 0, nextRate: 0 },
@@ -23,39 +20,18 @@ export const CardContext = createContext<CoinContextType>({
 });
 
 const CardList = () => {
-  const [coins, setCoins] = useRecoilState(coinState);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const { data: coinData, refetch } = useGetCoinQuery();
-  const { data: holdingData, refetch: holdingRefetch } = useGetHoldingQuery({
-    params: { id: userInfo?.id },
+  const [coins, setCoins] = useState<CoinDatas>([]);
+  const [id] = useRecoilState(idState);
+  const { refetch: userInfoRefetch } = useGetUserInfoQuery({
+    params: { id },
   });
+  const { data: coinData, refetch: coinRefetch } = useGetCoinQuery();
   const { data } = useGetTimeQuery({
-    params: { id: userInfo?.id },
+    params: { id: id },
   });
-  const [times, setTimes] = useRecoilState(timeState);
-  const [, setMyHoldings] = useRecoilState(holdingsState);
-
-  const login = () => {
-    const body = {
-      userId: userInfo?.name,
-      password: userInfo?.phonenum,
-    };
-
-    fetch(`${DEFAULT_URL}/api/Coin/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    })
-      .then((response) => response.json())
-      .then((data: any) => {
-        localStorage.setItem('WAM_Localstorage', JSON.stringify(data));
-        setUserInfo(
-          localStorage?.getItem('WAM_Localstorage')
-            ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
-            : null
-        );
-      });
-  };
+  const { refetch: holdingRefetch } = useGetHoldingQuery({ params: { id } });
+  const { refetch: rankingRefetch } = useGetRankingQuery();
+  const [times, setTimes] = useState<TimeType[]>([]);
 
   function getCurrentTimeElement(): string {
     const now = new Date();
@@ -82,9 +58,10 @@ const CardList = () => {
     console.log(matchingTime);
 
     if (matchingTime) {
-      refetch();
+      coinRefetch();
+      userInfoRefetch();
       holdingRefetch();
-      login();
+      rankingRefetch();
     }
   }
 
@@ -97,9 +74,8 @@ const CardList = () => {
 
   useEffect(() => {
     setCoins(coinData);
-    setMyHoldings(holdingData ?? []);
     setTimes(data ?? []);
-  }, [coinData, holdingData, data]);
+  }, [coinData, data]);
 
   return (
     <Wrap gap={10} justify='center'>

@@ -1,15 +1,15 @@
 import { Button, Input, Spinner, Stack, Text } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
-import { DEFAULT_URL } from '../../constant';
-import { useRecoilState } from 'recoil';
-import { userInfoState } from '../../atoms/info';
 import { enqueueSnackbar } from 'notistack';
+import { useLogin } from '../../api/coin-api';
+import { useRecoilState } from 'recoil';
+import { idState } from '../../atoms/info';
 
 const TextInput = () => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
-  const [, setUserInfo] = useRecoilState(userInfoState);
-  const [loading, setLoading] = useState(false);
+  const { mutateAsync, isLoading } = useLogin();
+  const [, setId] = useRecoilState(idState);
 
   const loginIdChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUserId(event.target.value);
@@ -25,45 +25,18 @@ const TextInput = () => {
       password,
     };
 
-    setLoading(true);
-
-    try {
-      const response = await fetch(`${DEFAULT_URL}/api/Coin/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+    if (userId && password) {
+      mutateAsync(body).then((response) => {
+        localStorage.setItem('WAM_Localstorage', response.data.id);
+        setId(response.data.id);
       });
-
-      const result = await response.json();
-
-      if (response.ok && result.phonenum) {
-        localStorage.setItem('WAM_Localstorage', JSON.stringify(result));
-        setUserInfo(
-          localStorage?.getItem('WAM_Localstorage')
-            ? JSON.parse(localStorage?.getItem('WAM_Localstorage') ?? '')
-            : null
-        );
-        setUserId('');
-        setPassword('');
-        setLoading(false);
-
-        enqueueSnackbar({
-          message: '성공적으로 로그인 되었습니다.',
-          variant: 'success',
-        });
-      } else {
-        enqueueSnackbar({
-          message: '로그인에 실패했습니다.',
-          variant: 'error',
-        });
-        setLoading(false);
-      }
-    } catch {
+      setUserId('');
+      setPassword('');
+    } else {
       enqueueSnackbar({
         message: '로그인에 실패했습니다.',
         variant: 'error',
       });
-      setLoading(false);
     }
   };
 
@@ -117,7 +90,7 @@ const TextInput = () => {
         </Stack>
       </Stack>
       <Stack justify='flex-start' align='center' background='gray.50'>
-        {loading ? (
+        {isLoading ? (
           <Spinner />
         ) : (
           <Button colorScheme='linkedin' variant='outline' onClick={login}>

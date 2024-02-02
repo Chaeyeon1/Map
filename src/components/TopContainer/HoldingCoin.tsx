@@ -1,7 +1,9 @@
 import { Image, Stack, Text, WrapItem } from '@chakra-ui/react';
-import { CoinList } from '../../type';
+import { CoinList, HoldingData } from '../../type';
 import { useRecoilState } from 'recoil';
-import { holdingsState } from '../../atoms/info';
+import { useGetHoldingQuery } from '../../api/coin-api';
+import { idState } from '../../atoms/info';
+import { useEffect, useState } from 'react';
 
 const HoldingCoin = ({
   src,
@@ -10,7 +12,13 @@ const HoldingCoin = ({
   src: string;
   coinName: CoinList;
 }) => {
-  const [myHoldings] = useRecoilState(holdingsState);
+  const [id] = useRecoilState(idState);
+  const { data } = useGetHoldingQuery({ params: { id } });
+  const [myHoldings, setMyHoldings] = useState<HoldingData>([]);
+
+  useEffect(() => {
+    setMyHoldings(data ?? []);
+  }, [data]);
 
   return (
     <WrapItem>

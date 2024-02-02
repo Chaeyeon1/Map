@@ -1,32 +1,27 @@
 import { Image, Stack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { COIN_URL, DEFAULT_URL } from '../../constant';
+import { COIN_URL } from '../../constant';
 import RankingText from './RankingText';
+import { useGetRankingAllQuery } from '../../api/coin-api';
+
+export type RankingAllType = {
+  id: number;
+  balance: number;
+  name: string;
+  type: string;
+  crew: string;
+  phonenum: string;
+  club: string;
+  total: number;
+}[];
 
 const AdminRanking = () => {
-  const [rankings, setRankings] = useState<
-    {
-      id: number;
-      balance: number;
-      name: string;
-      type: string;
-      crew: string;
-      phonenum: string;
-      club: string;
-      total: number;
-    }[]
-  >([]);
+  const [rankings, setRankings] = useState<RankingAllType>([]);
+  const { data } = useGetRankingAllQuery();
 
   useEffect(() => {
-    fetch(`${DEFAULT_URL}/api/Coin/ranking/all`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => response.json())
-      .then((rankingData) => {
-        setRankings(rankingData);
-      });
-  }, []);
+    setRankings(data ?? []);
+  }, [data]);
 
   return (
     <Stack mb={8} mt={8}>

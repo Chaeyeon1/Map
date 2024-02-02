@@ -1,57 +1,34 @@
 import { Button, Input, Spinner, Stack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { timeState, userInfoState } from '../../atoms/info';
+import { idState } from '../../atoms/info';
 import TimeList from './TimeList';
-import { DEFAULT_URL } from '../../constant';
-import { enqueueSnackbar } from 'notistack';
-import { useGetTimeQuery } from '../../api/coin-api';
+import { useAddTime, useGetTimeQuery } from '../../api/coin-api';
 
 export type TimeType = { id: number; timeId: number; timeElement: string };
 const ChangeTime = () => {
-  const [times, setTimes] = useRecoilState(timeState);
   const [timeChange, setTimeChange] = useState('');
-  const [userInfo] = useRecoilState(userInfoState);
-  const [isLoading, setIsLoading] = useState(false);
-  const { data: timeData, refetch } = useGetTimeQuery({
-    params: { id: userInfo?.id },
+  const [id] = useRecoilState(idState);
+  const { data: timeData } = useGetTimeQuery({
+    params: { id },
   });
+  const [times, setTimes] = useState<TimeType[]>([]);
+  const { mutateAsync, isLoading } = useAddTime();
+
+  const addTime = async () => {
+    const body = {
+      id,
+      timeChange,
+    };
+
+    mutateAsync(body).then(() => {
+      setTimeChange('');
+    });
+  };
 
   useEffect(() => {
     setTimes(timeData ?? []);
   }, [timeData]);
-
-  const addTime = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `${DEFAULT_URL}/api/Coin/time?id=${userInfo?.id}&timeElement=2024-02-02T${timeChange}:00`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-
-      if (response.ok) {
-        setTimeChange('');
-        refetch();
-        setIsLoading(false);
-        enqueueSnackbar({
-          message: '성공적으로 업데이트 되었습니다.',
-          variant: 'success',
-        });
-      } else {
-        enqueueSnackbar({
-          message: '업데이트에 실패했습니다.',
-          variant: 'error',
-        });
-        setIsLoading(false);
-      }
-    } catch {
-      enqueueSnackbar({ message: 'error입니다.', variant: 'error' });
-      setIsLoading(false);
-    }
-  };
 
   return (
     <Stack mt={8}>
@@ -78,14 +55,7 @@ const ChangeTime = () => {
         현재 저장되어 있는 시간
       </Text>
       {times?.map((time, i) => {
-        return (
-          <TimeList
-            setTimes={setTimes}
-            key={i}
-            time={time.timeElement}
-            i={time.timeId}
-          />
-        );
+        return <TimeList key={i} time={time.timeElement} i={time.timeId} />;
       })}
     </Stack>
   );
