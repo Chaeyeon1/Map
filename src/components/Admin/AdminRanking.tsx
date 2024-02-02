@@ -40,7 +40,7 @@ const AdminRanking = () => {
             <RankingText>{'학교'}</RankingText>
             <RankingText>{'동아리'}</RankingText>
             <RankingText>{'현금'}</RankingText>
-            <RankingText>{'평단가'}</RankingText>
+            <RankingText>{'평가 자산'}</RankingText>
           </Stack>
           {rankings?.map((ranking, i) => {
             return (
