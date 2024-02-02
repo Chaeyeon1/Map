@@ -22,7 +22,7 @@ const Coins = () => {
         </Stack>
         <Stack justify='center' align='flex-start' spacing='12px'>
           <Price />
-          {userInfo && <CoinChange />}
+          {userInfo && !userInfo?.admin && <CoinChange />}
         </Stack>
       </Card>
     </WrapItem>

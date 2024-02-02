@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { DEFAULT_URL } from '../constant';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 const axiosApi = (url: string, data?: any) => {
   const instance = axios.create({
@@ -24,5 +24,7 @@ const getCoinApi = async () => {
 export const useGetCoinQuery = () => {
   return useQuery([`coin`], () => getCoinApi(), {
     refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 };

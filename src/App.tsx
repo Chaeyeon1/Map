@@ -5,10 +5,11 @@ import { Stack } from '@chakra-ui/react';
 import Logo from './components/Logo';
 import CardList from './components/CardList';
 import { SnackbarProvider } from 'notistack';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const App = () => {
   const queryClient = new QueryClient();
+
   return (
     <QueryClientProvider client={queryClient}>
       <SnackbarProvider classes={{ containerRoot: 'z-alert' }}>
