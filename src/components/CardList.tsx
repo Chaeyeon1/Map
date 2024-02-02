@@ -10,7 +10,11 @@ import {
   timeState,
   userInfoState,
 } from '../atoms/info';
-import { useGetCoinQuery, useGetHoldingQuery } from '../api/coin-api';
+import {
+  useGetCoinQuery,
+  useGetHoldingQuery,
+  useGetTimeQuery,
+} from '../api/coin-api';
 import { DEFAULT_URL } from '../constant';
 
 export const CardContext = createContext<CoinContextType>({
@@ -25,7 +29,10 @@ const CardList = () => {
   const { data: holdingData, refetch: holdingRefetch } = useGetHoldingQuery({
     params: { id: userInfo?.id },
   });
-  const [times] = useRecoilState(timeState);
+  const { data } = useGetTimeQuery({
+    params: { id: userInfo?.id },
+  });
+  const [times, setTimes] = useRecoilState(timeState);
   const [, setMyHoldings] = useRecoilState(holdingsState);
 
   const login = () => {
@@ -87,7 +94,8 @@ const CardList = () => {
   useEffect(() => {
     setCoins(coinData);
     setMyHoldings(holdingData ?? []);
-  }, [coinData, holdingData]);
+    setTimes(data ?? []);
+  }, [coinData, holdingData, data]);
 
   return (
     <Wrap gap={10} justify='center'>
