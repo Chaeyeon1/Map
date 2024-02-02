@@ -31,15 +31,19 @@ const CardList = () => {
   const { refetch: rankingRefetch } = useGetRankingQuery();
   const [times, setTimes] = useState<TimeType[]>([]);
 
+  useEffect(() => {
+    setCoins(coinData);
+    setTimes(data ?? []);
+  }, [coinData, data]);
+
   function getCurrentTimeElement(): string {
     const now = new Date();
     const minutes = now.getMinutes();
     const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-    const seconds = now.getSeconds();
-    const formattedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-    const currentTimeElement = `${now.getFullYear()}-${
-      now.getMonth() + 1
-    }-${now.getDate()}T${now.getHours()}:${formattedMinutes}:${formattedSeconds}`;
+
+    const hours = now.getHours();
+    const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
+    const currentTimeElement = `${formattedHours}:${formattedMinutes}:00`;
 
     return currentTimeElement;
   }
@@ -48,7 +52,7 @@ const CardList = () => {
     const currentTimeElement = getCurrentTimeElement();
 
     const matchingTime = times?.find(
-      (time) => time.timeElement?.slice(11) === currentTimeElement.slice(9)
+      (time) => time?.timeElement?.split('T')[1] === currentTimeElement
     );
 
     if (matchingTime) {
@@ -64,12 +68,7 @@ const CardList = () => {
     if (now.getSeconds() === 0) {
       callApiIfNeeded();
     }
-  }, 60000 - (Date.now() % 60000));
-
-  useEffect(() => {
-    setCoins(coinData);
-    setTimes(data ?? []);
-  }, [coinData, data]);
+  }, 60001 - (Date.now() % 60000));
 
   return (
     <Wrap gap={10} justify='center'>
