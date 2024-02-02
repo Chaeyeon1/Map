@@ -24,7 +24,7 @@ const Coins = () => {
         </Stack>
         {coin?.prevPrice === 0 ? (
           <Stack
-            height={data?.admin ? '96px' : '59px'}
+            height={data?.admin ? '59px' : '96px'}
             display='flex'
             justifyContent='center'
           >
