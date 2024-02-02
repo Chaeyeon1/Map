@@ -77,7 +77,7 @@ const ChangeTime = () => {
       <Text fontSize='14px' colorScheme='facebook' mt={4} fontWeight='bold'>
         현재 저장되어 있는 시간
       </Text>
-      {times.map((time, i) => {
+      {times?.map((time, i) => {
         return (
           <TimeList
             setTimes={setTimes}

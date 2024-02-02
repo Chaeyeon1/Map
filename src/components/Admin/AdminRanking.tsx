@@ -42,9 +42,15 @@ const AdminRanking = () => {
             <RankingText>{'현금'}</RankingText>
             <RankingText>{'평단가'}</RankingText>
           </Stack>
-          {rankings.map((ranking, i) => {
+          {rankings?.map((ranking, i) => {
             return (
-              <Stack gap={4} direction='row' alignItems='center' flex={1}>
+              <Stack
+                key={i}
+                gap={4}
+                direction='row'
+                alignItems='center'
+                flex={1}
+              >
                 <Stack width='35px' direction='row'>
                   <Text>{i + 1}.</Text>
                   <Image
