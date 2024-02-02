@@ -1,4 +1,4 @@
-import { Stack, WrapItem } from '@chakra-ui/react';
+import { Stack, Text, WrapItem } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { CardContext } from '../CardList';
 import Card from '../Card';
@@ -20,10 +20,19 @@ const Coins = () => {
           <CoinInfo />
           {userInfo && <MyHoldingCoin />}
         </Stack>
-        <Stack justify='center' align='flex-start' spacing='12px'>
-          <Price />
-          {userInfo && !userInfo?.admin && <CoinChange />}
-        </Stack>
+        {coin?.prevPrice === 0 ? (
+          <Stack height='59px' display='flex' justifyContent='center'>
+            <Text fontWeight='bold'>상장폐지된 코인입니다.</Text>
+            <Text fontWeight='bold' fontSize='12px'>
+              다음 가격 갱신 때부터 다시 구매하실 수 있습니다.
+            </Text>
+          </Stack>
+        ) : (
+          <Stack justify='center' align='flex-start' spacing='12px'>
+            <Price />
+            {userInfo && !userInfo?.admin && <CoinChange />}
+          </Stack>
+        )}
       </Card>
     </WrapItem>
   );
