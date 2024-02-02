@@ -26,7 +26,7 @@ const ChangeTime = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${DEFAULT_URL}/api/Coin/time?id=${userInfo?.id}&timeElement=2024-02-01T${timeChange}:00`,
+        `${DEFAULT_URL}/api/Coin/time?id=${userInfo?.id}&timeElement=2024-02-02T${timeChange}:00`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
