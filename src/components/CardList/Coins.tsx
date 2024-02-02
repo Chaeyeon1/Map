@@ -21,7 +21,11 @@ const Coins = () => {
           {userInfo && <MyHoldingCoin />}
         </Stack>
         {coin?.prevPrice === 0 ? (
-          <Stack height='59px' display='flex' justifyContent='center'>
+          <Stack
+            height={userInfo?.admin ? '59px' : '96px'}
+            display='flex'
+            justifyContent='center'
+          >
             <Text fontWeight='bold'>상장폐지된 코인입니다.</Text>
             <Text fontWeight='bold' fontSize='12px'>
               다음 가격 갱신 때부터 다시 구매하실 수 있습니다.
