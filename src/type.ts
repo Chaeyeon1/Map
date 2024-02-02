@@ -16,6 +16,7 @@ export type HoldingData =
       pknu: number;
       pus: number;
       bufs: number;
+      total: number;
     }[]
   | null;
 
