@@ -51,10 +51,6 @@ const CardList = () => {
       (time) => time.timeElement?.slice(11) === currentTimeElement.slice(9)
     );
 
-    console.log(currentTimeElement);
-    console.log(times?.[0]?.timeElement);
-    console.log(matchingTime);
-
     if (matchingTime) {
       coinRefetch();
       userInfoRefetch();

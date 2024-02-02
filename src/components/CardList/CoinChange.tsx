@@ -72,14 +72,14 @@ const CoinChange = () => {
     };
 
     try {
-      if (coin.currentPrice * count < (userData?.balance ?? 0)) {
+      if (coin.currentPrice * count <= (userData?.balance ?? 0)) {
         if (count > 0) {
           buyMutateAsync(body);
           setCount(0);
         } else {
           enqueueSnackbar({
             variant: 'error',
-            message: '음수는 입력하실 수 없습니다.',
+            message: '1개이상 입력해주세요.',
           });
           setCount(0);
         }
