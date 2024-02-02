@@ -210,7 +210,7 @@ export function useBuy() {
 
 export async function postTime(body: { id?: number; timeChange: string }) {
   const response = await defaultInstance.post(
-    `/api/Coin/time?id=${body?.id}&timeElement=2024-02-02T${body.timeChange}:00`
+    `/api/Coin/time?id=${body?.id}&timeElement=2024-02-03T${body.timeChange}:00`
   );
 
   return response.status === 200;
