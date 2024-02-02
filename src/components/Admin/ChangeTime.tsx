@@ -1,26 +1,25 @@
 import { Button, Input, Spinner, Stack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { userInfoState } from '../../atoms/info';
+import { timeState, userInfoState } from '../../atoms/info';
 import TimeList from './TimeList';
-import { getTime } from '../../api/getMyHoldings';
 import { DEFAULT_URL } from '../../constant';
 import { enqueueSnackbar } from 'notistack';
+import { useGetTimeQuery } from '../../api/coin-api';
 
 export type TimeType = { id: number; timeId: number; timeElement: string };
 const ChangeTime = () => {
-  const [times, setTimes] = useState<TimeType[]>([]);
+  const [times, setTimes] = useRecoilState(timeState);
   const [timeChange, setTimeChange] = useState('');
   const [userInfo] = useRecoilState(userInfoState);
   const [isLoading, setIsLoading] = useState(false);
+  const { data: timeData, refetch } = useGetTimeQuery({
+    params: { id: userInfo?.id },
+  });
 
   useEffect(() => {
-    getTime(userInfo)
-      .then((response) => response.json())
-      .then((timesData) => {
-        setTimes(timesData);
-      });
-  }, []);
+    setTimes(timeData ?? []);
+  }, [timeData]);
 
   const addTime = async () => {
     setIsLoading(true);
@@ -35,11 +34,7 @@ const ChangeTime = () => {
 
       if (response.ok) {
         setTimeChange('');
-        getTime(userInfo)
-          .then((response) => response.json())
-          .then((timesData) => {
-            setTimes(timesData);
-          });
+        refetch();
         setIsLoading(false);
         enqueueSnackbar({
           message: '성공적으로 업데이트 되었습니다.',
