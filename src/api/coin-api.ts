@@ -5,8 +5,6 @@ import { TimeType } from '../components/Admin/ChangeTime';
 import { HoldingData } from '../type';
 import { enqueueSnackbar } from 'notistack';
 import { RankingAllType } from '../components/Admin/AdminRanking';
-import { useRecoilState } from 'recoil';
-import { idState } from '../atoms/info';
 import { UserInfoType } from '../components/TopContainer/MyProfileBank';
 
 const axiosApi = (url: string, data?: any) => {
@@ -48,18 +46,19 @@ export const useGetUserInfoQuery = ({
 }: {
   params: { id?: number };
 }) => {
-  return useQuery([`userInfo`], () => getUserInfoApi({ params }), { retry: 0 });
+  return useQuery([`userInfo`], () => getUserInfoApi({ params }), {
+    retry: 0,
+    enabled: !!params.id,
+  });
 };
 
-const getTimeApi = async ({ params }: { params: { id?: number } }) => {
-  const { data } = await defaultInstance.get(`/api/Coin/time?id=${params?.id}`);
+const getTimeApi = async () => {
+  const { data } = await defaultInstance.get(`/api/Coin/time?id=${'100'}`);
   return data as TimeType[];
 };
 
-export const useGetTimeQuery = ({ params }: { params: { id?: number } }) => {
-  return useQuery([`time`], () => getTimeApi({ params }), {
-    enabled: !!params.id,
-  });
+export const useGetTimeQuery = () => {
+  return useQuery([`time`], () => getTimeApi());
 };
 
 const getHoldingApi = async ({ params }: { params: { id?: number } }) => {
@@ -70,7 +69,10 @@ const getHoldingApi = async ({ params }: { params: { id?: number } }) => {
 };
 
 export const useGetHoldingQuery = ({ params }: { params: { id?: number } }) => {
-  return useQuery([`holding`], () => getHoldingApi({ params }), { retry: 0 });
+  return useQuery([`holding`], () => getHoldingApi({ params }), {
+    retry: 0,
+    enabled: !!params.id,
+  });
 };
 
 const getRankingApi = async () => {

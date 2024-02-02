@@ -26,9 +26,7 @@ const CardList = () => {
     params: { id },
   });
   const { data: coinData, refetch: coinRefetch } = useGetCoinQuery();
-  const { data } = useGetTimeQuery({
-    params: { id: id },
-  });
+  const { data } = useGetTimeQuery();
   const { refetch: holdingRefetch } = useGetHoldingQuery({ params: { id } });
   const { refetch: rankingRefetch } = useGetRankingQuery();
   const [times, setTimes] = useState<TimeType[]>([]);

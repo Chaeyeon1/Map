@@ -9,9 +9,7 @@ export type TimeType = { id: number; timeId: number; timeElement: string };
 const ChangeTime = () => {
   const [timeChange, setTimeChange] = useState('');
   const [id] = useRecoilState(idState);
-  const { data: timeData } = useGetTimeQuery({
-    params: { id },
-  });
+  const { data: timeData } = useGetTimeQuery();
   const [times, setTimes] = useState<TimeType[]>([]);
   const { mutateAsync, isLoading } = useAddTime();
 
