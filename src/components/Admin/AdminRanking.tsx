@@ -1,6 +1,5 @@
-import { Image, Stack, Text } from '@chakra-ui/react';
+import { Stack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { COIN_URL } from '../../constant';
 import RankingText from './RankingText';
 import { useGetRankingAllQuery } from '../../api/coin-api';
 
@@ -22,8 +21,6 @@ const AdminRanking = () => {
   useEffect(() => {
     setRankings(data ?? []);
   }, [data]);
-
-  console.log(data);
 
   return (
     <Stack mb={8} mt={8}>
@@ -50,12 +47,6 @@ const AdminRanking = () => {
               >
                 <Stack width='35px' direction='row'>
                   <Text>{i + 1}.</Text>
-                  <Image
-                    borderRadius='full'
-                    boxSize='20px'
-                    src={COIN_URL[i]}
-                    alt='My Image'
-                  />
                 </Stack>
                 <RankingText>{ranking.name}</RankingText>
                 <RankingText>{ranking.crew}</RankingText>
