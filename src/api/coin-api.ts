@@ -85,7 +85,7 @@ export const useGetRankingQuery = () => {
 };
 
 const getRankingAllApi = async () => {
-  const { data } = await defaultInstance.get('/api/Coin/ranking/all');
+  const { data } = await defaultInstance.get(`/api/Coin/ranking/all`);
   return data as RankingAllType;
 };
 

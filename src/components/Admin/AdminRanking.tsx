@@ -23,6 +23,8 @@ const AdminRanking = () => {
     setRankings(data ?? []);
   }, [data]);
 
+  console.log(data);
+
   return (
     <Stack mb={8} mt={8}>
       <Text fontSize='18px' fontWeight='bold'>

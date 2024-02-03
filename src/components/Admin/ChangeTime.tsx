@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import { idState } from '../../atoms/info';
 import TimeList from './TimeList';
 import { useAddTime, useGetTimeQuery } from '../../api/coin-api';
+import { enqueueSnackbar } from 'notistack';
 
 export type TimeType = { id: number; timeId: number; timeElement: string };
 const ChangeTime = () => {
@@ -14,14 +15,18 @@ const ChangeTime = () => {
   const { mutateAsync, isLoading } = useAddTime();
 
   const addTime = async () => {
-    const body = {
-      id,
-      timeChange,
-    };
+    if (!timeChange) {
+      enqueueSnackbar({ variant: 'error', message: '시간을 입력해주세요.' });
+    } else {
+      const body = {
+        id,
+        timeChange,
+      };
 
-    mutateAsync(body).then(() => {
-      setTimeChange('');
-    });
+      mutateAsync(body).then(() => {
+        setTimeChange('');
+      });
+    }
   };
 
   useEffect(() => {
